@@ -75,7 +75,7 @@ class ProductController extends Controller
         $order = 'products.' . $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         if (empty($request->input('search.value'))) {
-            $products = Product::with('category', 'brand', 'unit')->offset($start)->where('created_at', '>', '2022-05-07');
+            $products = Product::with('category', 'brand', 'unit')->offset($start);
             // if ($request->has('start_date') && !empty($request->start_date) ){
             //     $dateS = new Carbon($request->start_date);
             //     $dateE = new Carbon($request->end_date);
@@ -88,7 +88,7 @@ class ProductController extends Controller
                 ->get();
         } else {
             $search = $request->input('search.value');
-            $products =  Product::select('products.*')->where('created_at', '>', '2022-05-07')
+            $products =  Product::select('products.*')
                 ->with('category', 'brand', 'unit')
                 ->orWhereTranslationLike('name', "%$search%")
                 // ->join('categories', 'products.category_id', '=', 'categories.id')
