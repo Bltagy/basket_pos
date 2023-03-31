@@ -13,6 +13,7 @@
 
 Auth::routes();
 Route::get('/sync', 'HomeController@sync');
+Route::get('/check-code/{code}', 'HomeController@checkCode');
 Route::group(['middleware' => 'auth'], function() {
 	Route::get('/dashboard', 'HomeController@dashboard');
 });
@@ -71,7 +72,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::post('importproduct', 'ProductController@importProduct')->name('product.import');
 	Route::post('exportproduct', 'ProductController@exportProduct')->name('product.export');
 	Route::get('products/print_barcode','ProductController@printBarcode')->name('product.printBarcode');
-	
+
 	Route::get('products/lims_product_search', 'ProductController@limsProductSearch')->name('product.search');
 	Route::post('products/deletebyselection', 'ProductController@deleteBySelection');
 	Route::post('products/update', 'ProductController@updateProduct');
@@ -223,7 +224,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 
 	Route::get('setting/general_setting', 'SettingController@generalSetting')->name('setting.general');
 	Route::post('setting/general_setting_store', 'SettingController@generalSettingStore')->name('setting.generalStore');
-	
+
 	Route::get('setting/reward-point-setting', 'SettingController@rewardPointSetting')->name('setting.rewardPoint');
 	Route::post('setting/reward-point-setting_store', 'SettingController@rewardPointSettingStore')->name('setting.rewardPointStore');
 
@@ -307,7 +308,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::get('my-transactions/{year}/{month}', 'HomeController@myTransaction');
 
 
-	
+
 	Route::post('appSales/sale-data', 'AppSaleController@saleData');
 	Route::post('appSales/setSaleDelivery', 'AppSaleController@setSaleDelivery');
 	Route::post('appSales/sendmail', 'AppSaleController@sendMail')->name('appSale.sendmail');
@@ -330,6 +331,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::get('appSales/{id}/create', 'AppSaleController@createSale');
 	Route::post('appSales/deletebyselection', 'AppSaleController@deleteBySelection');
 	Route::get('appSales/print-last-reciept', 'AppSaleController@printLastReciept')->name('appSales.printLastReciept');
+	Route::get('appSales/payDeliveryDue/{id}', 'AppSaleController@payDeliveryDue')->name('appSales.payDeliveryDue');
 	Route::get('appSales/today-sale', 'AppSaleController@todaySale');
 	Route::get('appSales/today-profit/{warehouse_id}', 'AppSaleController@todayProfit');
 	Route::resource('appSales', 'AppSaleController');

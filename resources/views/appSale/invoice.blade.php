@@ -69,7 +69,7 @@
                 content: ''; display: block;
                 page-break-after: always;
                 page-break-inside: avoid;
-                page-break-before: avoid;        
+                page-break-before: avoid;
             }
         }
     </style>
@@ -91,29 +91,39 @@
         </table>
         <br>
     </div>
-        
+
     <div id="receipt-data">
         <div class="centered">
             @if($general_setting->site_logo)
                 <img src="{{url('public/logo', $general_setting->site_logo)}}" height="42" width="50" style="margin:10px 0;filter: brightness(0);">
             @endif
-            
+
             <h2>{{$lims_biller_data->company_name}}</h2>
             @if ($lims_warehouse_data)
             @endif
-            
+
         </div>
         <table>
             <tr>
                 <td style="vertical-align:top;margin-right: 5px">
-                    {{trans('file.Date')}}: {{$lims_sale_data->created_at}}<br>
-            {{trans('file.reference')}}: {{$lims_sale_data->reference_no}}<br>
-            اسم العميل: {{$lims_customer_data->name}}
+                    <strong>{{trans('file.Date')}}:</strong> {{$lims_sale_data->created_at}}<br>
+                    <strong>{{trans('file.reference')}}:</strong> {{$lims_sale_data->id}}<br>
+                    <strong>اسم العميل:</strong>{{$lims_customer_data->name}}<br>
+                    <strong>ملاحظات العميل:</strong>
+                    {!! $lims_sale_data->sale_note !!}
                 </td>
                 <td style="vertical-align:top;">
                     {!! $lims_sale_data->staff_note !!}
                 </td>
             </tr>
+{{--            <tr>--}}
+{{--                <td style="vertical-align:top;margin-right: 5px">--}}
+{{--                    ملاحظات العميل--}}
+{{--                </td>--}}
+{{--                <td style="vertical-align:top;">--}}
+{{--                    {!! $lims_sale_data->sale_note !!}--}}
+{{--                </td>--}}
+{{--            </tr>--}}
         </table>
         <p>
         </p>
@@ -127,7 +137,7 @@
             <tbody>
                 <?php $total_product_tax = 0;?>
                 @foreach($lims_product_sale_data as $key => $product_sale_data)
-                <?php 
+                <?php
                     $lims_product_data = \App\Product::find($product_sale_data->product_id);
                     if (!$lims_product_data){
                         continue;
@@ -151,7 +161,7 @@
                     <td style="text-align:left;">{{number_format((float)$product_sale_data->total, 2, '.', '')}}</td>
                 </tr>
                 @endforeach
-            
+
             <!-- <tfoot> -->
                 <tr>
                     <th style="text-align:right">{{trans('file.Total')}}</th>
@@ -217,14 +227,14 @@
                     <td style="padding: 5px;width:30%">{{trans('file.Paid By')}}: {{$payment_data->paying_method}}</td>
                     <td style="padding: 5px;width:40%">{{trans('file.Amount')}}: {{number_format((float)$payment_data->amount, 2, '.', '')}}</td>
                     <td style="padding: 5px;width:30%">{{trans('file.Change')}}: {{number_format((float)$payment_data->change, 2, '.', '')}}</td>
-                </tr>                
+                </tr>
                 @endforeach
                 <tr><td class="centered" colspan="3">شكرا للتسوق معنا للشكاوي والاقتراحات 01022522422</td></tr>
                 <tr>
                     <td class="centered" colspan="3">
 {{--                    <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS1D::getBarcodePNG($lims_sale_data->reference_no, 'C128') . '" width="300" alt="barcode"   />';?>--}}
 {{--                    <br>--}}
-                    <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS2D::getBarcodePNG($lims_sale_data->reference_no, 'QRCODE') . '" alt="barcode"   />';?>    
+                    <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS2D::getBarcodePNG($lims_sale_data->reference_no, 'QRCODE') . '" alt="barcode"   />';?>
                     </td>
                 </tr>
             </tbody>

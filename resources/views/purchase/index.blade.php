@@ -43,6 +43,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                    <label>{{trans('file.Select Product')}}</label>
+                                        <div class="search-box input-group">
+                                            <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
+                                            <input type="text" name="product_code_name" value="{{ isset($_GET['product_code_name']) ?  $_GET['product_code_name']: ''}}" id="lims_productcodeSearch" placeholder="من فضلك استخدم الماسح او اكتب كود المنتح او الاسم...." class="form-control" />
+                                        </div>
+                    </div>
+                </div>
                 <div class="col-md-2 mt-3">
                     <div class="form-group">
                         <button class="btn btn-primary" id="filter-btn" type="submit">{{trans('file.submit')}}</button>
@@ -292,6 +301,63 @@
 
 @push('scripts')
 <script type="text/javascript">
+  <?php $productArray = []; ?>
+    var lims_product_code = [
+        @foreach($lims_product_list_without_variant as $product)
+            <?php
+                $productArray[] = htmlspecialchars($product->code . ' (' . $product->name . ')');
+            ?>
+        @endforeach
+        @foreach($lims_product_list_with_variant as $product)
+            <?php
+                $productArray[] = htmlspecialchars($product->item_code . ' (' . $product->name . ')');
+            ?>
+        @endforeach
+            <?php
+            echo  '"'.implode('","', $productArray).'"';
+            ?>
+    ];
+
+var lims_productcodeSearch = $('#lims_productcodeSearch');
+
+lims_productcodeSearch.autocomplete({
+source: function(request, response) {
+    var matcher = new RegExp(".?" + $.ui.autocomplete.escapeRegex(request.term), "i");
+    $.grep(lims_product_code, function(item,request) {
+        return matcher.test(item);
+    })
+    response($.grep(lims_product_code, function(item) {
+        return matcher.test(item);
+    }));
+},
+response: function(event, ui) {
+    var inputData = $("input[name='product_code_name']").val();
+    if (inputData.length < 6){
+        return;
+    }
+    if (ui.content.length == 1) {
+        var data = ui.content[0].value;
+        $(this).autocomplete( "close" );
+        productSearch(data);
+    }
+    else{
+        if (confirm("هـذا المنتج غير موجود هل تريد اضافته ؟!")) {
+         $('#purchase-form').append("<input type='hidden' name='redirect_to_new' value='1'>")
+         $('#purchase-form').submit();
+        } else {
+            $("input[name='product_code_name']").val('');
+        }
+        
+    };
+},
+select: function(event, ui) {
+    var label = ui.item.label;
+    var value = ui.item.value;
+   //store in session
+  document.valueSelectedForAutocomplete = value 
+}
+});
+
 
     $(".daterangepicker-field").daterangepicker({
       callback: function(startDate, endDate, period){
@@ -516,6 +582,8 @@
     function dataTable() {
         var starting_date = $("input[name=starting_date]").val();
         var ending_date = $("input[name=ending_date]").val();
+        var product_code_name = $("input[name=product_code_name]").val();
+        console.log(product_code_name);
         var warehouse_id = $("#warehouse_id").val();
         $('#purchase-table').DataTable( {
             "processing": true,
@@ -525,6 +593,7 @@
                 data:{
                     all_permission: all_permission,
                     starting_date: starting_date,
+                    product_code_name: product_code_name,
                     ending_date: ending_date,
                     warehouse_id: warehouse_id
                 },

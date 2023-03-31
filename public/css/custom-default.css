@@ -313,12 +313,12 @@ a {
 }
 
 @-webkit-keyframes animatebottom {
-  from { bottom:-100px; opacity:0 } 
+  from { bottom:-100px; opacity:0 }
   to { bottom:0px; opacity:1 }
 }
 
-@keyframes animatebottom { 
-  from{ bottom:-100px; opacity:0 } 
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
   to{ bottom:0; opacity:1 }
 }
 
@@ -421,7 +421,7 @@ a:focus,button:focus,.btn:focus {
 }
 
 .dashboard-counts {
-	padding: 10px 0; 
+	padding: 10px 0;
 }
 
 .filter-toggle {
@@ -432,7 +432,7 @@ a:focus,button:focus,.btn:focus {
 
 .filter-toggle .date-btn {
 	padding: 0.3rem 0.75rem;
-	border-radius: 15px; 
+	border-radius: 15px;
 }
 
 .filter-toggle .date-btn.active {
@@ -696,7 +696,7 @@ nav.navbar .nav-item li.notifications a i{
 	float: left;
 	vertical-align: middle;
 	width: 30%;
-} 
+}
 
 .dt-buttons {
 	display: inline-block;
@@ -1156,3 +1156,57 @@ table.dataTable tbody td.dt-checkboxes-cell {
 	overflow-y: auto;
 }
 
+.pos-page table#myTable {
+    font-size: larger;
+}
+.pos-page td.col-sm-2.sub-total,
+.pos-page td.col-sm-2.product-price
+{
+    font-size: x-large;
+}
+.pos-page table#myTable input.form-control.qty.numkey.input-number {
+    font-size: x-large;
+}
+.pos-page table#myTable [class^="dripicons-"]:before, [class*=" dripicons-"]:before{
+    line-height: 2.0 !important;
+}
+.pos-page .card-product .img-wrap {
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+    position: relative;
+    height: 120px;
+    text-align: center;
+}
+.pos-page .card-product .img-wrap img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+.pos-page .card-product .info-wrap {
+    overflow: hidden;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+.pos-page .card-product .bottom-wrap {
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.pos-page .label-rating { margin-right:10px;
+    color: #333;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pos-page .card-product .price-old {
+    color: #999;
+}
+input#lims_productcodeSearch {
+    font-size: x-large;
+}
+input#lims_productcodeSearchCheck {
+    font-size: x-large;
+}
+.prod-card {
+    font-size: x-large;
+}

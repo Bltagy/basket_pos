@@ -32,16 +32,42 @@
                         <label class="d-tc mt-2 mr-5"><strong>اختر تاريخ للمضاف حديثا</strong> &nbsp;</label>
                         <div class="d-tc">
                             <div class="input-group">
-                                <input type="text" class="p_daterangepicker-field form-control" placeholder="اختر التاريخ...." value="@if ($start_date) {{$start_date}} to {{$end_date}} @endif" required />
+                                <input type="text" class="p_daterangepicker-field form-control" placeholder="اختر التاريخ...." value="@if ($start_date) {{$start_date}} to {{$end_date}} @endif" />
                                 <input type="hidden" name="p_start_date" value="{{$start_date}}" />
                                 <input type="hidden" name="p_end_date" value="{{$end_date}}" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 mt-3">
+
+                <div class="col-md-6  mt-3">
+                    <div class="form-group row">
+                        <label class="d-tc mt-2 mr-5"><strong>او اختر القسم</strong> &nbsp;</label>
+                        <div class="d-tc" style="width: 38%;">
+                            <div class="input-group">
+                                <select name="category_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="اختر القسم">
+                                    @foreach($lims_category_list as $category)
+                                        <option value="{{$category->id}}" {{ request('category_id') && $category->id == request('category_id') ? 'selected':''  }}>{{$category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6  mt-3">
+                    <div class="form-group row">
+                        <label class="d-tc mt-2 mr-5"><strong>عرض ترويجي؟</strong> &nbsp;</label>
+                        <div class="d-tc" style="width: 38%;">
+                            <div class="input-group">
+                                <input type="checkbox" value="1" name="is_promotion" {{ request('is_promotion') && request('is_promotion') == 1 ? "checked" : "" }} style="width: 20px;
+    height: 38px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3 text-center">
                     <div class="form-group">
-                        <button class="btn btn-primary" type="submit">{{trans('file.submit')}}</button>
+                        <button class="btn btn-primary" type="submit">بحث وتصفية</button>
                     </div>
                 </div>
             </div>
@@ -367,6 +393,8 @@
                 data:{
                     all_permission: all_permission,
                     start_date: $('input[name="p_start_date"]').val(),
+                    category_id: $('select[name="category_id"] option:selected').val(),
+                    is_promotion: $('input[name="is_promotion"]').is(":checked")  ? 1:0,
                     end_date: $('input[name="p_end_date"]').val(),
                 },
                 dataType: "json",
@@ -473,31 +501,31 @@
                                     case 'الكود':
                                         return 'Barcode'
                                         break;
-                                
+
                                     case 'مسلسل':
                                         return 'Code'
                                         break;
-                                
+
                                     case 'اسم':
                                         return 'Name'
                                         break;
-                                
+
                                     case 'كمية':
                                         return 'qty'
                                         break;
-                                
+
                                     case 'السعر':
                                         return 'out_price'
                                         break;
-                                
+
                                     case 'سعر للموبايل':
                                         return 'out_price3'
                                         break;
-                                
+
                                     case 'كلفة':
                                         return 'av_price'
                                         break;
-                                
+
                                     default:
                                     return columnIdx +': '+ data;
                                         break;
@@ -509,31 +537,31 @@
                                     case 'الكود':
                                         return 'باركود الصنف'
                                         break;
-                                
+
                                     case 'مسلسل':
                                         return 'كود الصنف'
                                         break;
-                                
+
                                     case 'اسم':
                                         return 'اسم الصنف'
                                         break;
-                                
+
                                     case 'كمية':
                                         return 'الكميه'
                                         break;
-                                
+
                                     case 'السعر':
                                         return 'سعر البيع'
                                         break;
-                                
+
                                     case 'سعر للموبايل':
                                         return 'سعر الموبايل'
                                         break;
-                                
+
                                     case 'كلفة':
                                         return 'سعر الشراء'
                                         break;
-                                
+
                                     default:
                                     return columnIdx +': '+ data;
                                         break;

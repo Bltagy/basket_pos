@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>بتاريخ</label> 
+                                            <label>بتاريخ</label>
                                             <input type="text" value="{{$lims_return_data->created_at->format('Y/m/d')}}" name="created_at" class="form-control pos-date" >
                                         </div>
                                     </div>
@@ -915,5 +915,49 @@ $('#payment-form').on('submit',function(e){
         e.preventDefault();
     }
 });
+    $('#submit-button').on('click',function(e){
+        e.preventDefault();
+        @if( Auth::user()->role_id != 1)
+        var product_id = 0;
+        Swal.fire({
+            title: 'اكتب كود المشرف المؤقت',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'استكمال',
+            cancelButtonText: 'ٌٌالغاء',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed && result.value == 0) {
+                Swal.fire({
+                    title: `الكود غير صحيح!`
+                })
+            } else if (result.isConfirmed) {
+                $('#payment-form').submit();
+            }
+        })
+        @else
+        $('#payment-form').submit();
+        @endif
+
+
+    });
 </script>
 @endpush

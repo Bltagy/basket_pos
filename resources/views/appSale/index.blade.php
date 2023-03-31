@@ -1,4 +1,10 @@
-@extends('layout.main') @section('content')
+@extends('layout.main')
+<style>
+    .sale-note-bg{
+        background-color: #f6e3ff;
+    }
+</style>
+@section('content')
 @if(session()->has('message'))
   <div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{!! session()->get('message') !!}</div>
 @endif
@@ -618,7 +624,6 @@ function isCashRegisterAvailable(warehouse_id) {
         deposit = $('table.sale-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.deposit').val();
         var sale_id = $(this).data('id').toString();
         var balance = $('table.sale-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('td:nth-child(8)').text();
-        console.log(balance);
         balance = parseFloat(balance.replace(/,/g, ''));
         $('input[name="paying_amount"]').val(balance);
         $('#add-payment input[name="balance"]').val(balance);
@@ -869,8 +874,6 @@ function isCashRegisterAvailable(warehouse_id) {
         event.preventDefault();
         var deliveryId = $(this).val();
         var saleId = $(this).data('sale-id');
-        console.log(deliveryId);
-        console.log(saleId);
         $.ajax({
             type:'POST',
             url:'appSales/setSaleDelivery',
@@ -938,6 +941,10 @@ function isCashRegisterAvailable(warehouse_id) {
         "createdRow": function( row, data, dataIndex ) {
             //alert(data);
             $(row).addClass('sale-link');
+            if ( data.sale_note ){
+                $(row).addClass('sale-note-bg');
+            }
+            
             $(row).attr('data-sale', data['sale']);
         },
         "columns": [

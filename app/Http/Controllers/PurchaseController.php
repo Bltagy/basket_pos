@@ -32,6 +32,9 @@ class PurchaseController extends Controller
 {
     public function index(Request $request)
     {
+        if ( isset($request->bb) ){
+            dd($request->all());
+        }
         $role = Role::find(Auth::user()->role_id);
         if($role->hasPermissionTo('purchases-index')) {
             if($request->input('warehouse_id'))
@@ -55,7 +58,11 @@ class PurchaseController extends Controller
             $lims_pos_setting_data = PosSetting::latest()->first();
             $lims_warehouse_list = Warehouse::where('is_active', true)->get();
             $lims_account_list = Account::where('is_active', true)->get();
-            return view('purchase.index', compact( 'lims_account_list', 'lims_warehouse_list', 'all_permission', 'lims_pos_setting_data', 'warehouse_id', 'starting_date', 'ending_date'));
+            // $lims_product_list_without_variant = $this->productWithoutVariant();
+            $lims_product_list_without_variant = [];
+            // $lims_product_list_with_variant = $this->productWithVariant();
+            $lims_product_list_with_variant = [];
+            return view('purchase.index', compact( 'lims_account_list', 'lims_warehouse_list', 'all_permission', 'lims_pos_setting_data', 'warehouse_id', 'starting_date', 'ending_date', 'lims_product_list_without_variant','lims_product_list_with_variant'));
         }
         else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');

@@ -846,7 +846,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="search-box form-group">
-                                            <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="Scan/Search product by name/code" class="form-control"  />
+                                            <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="ابحث عن اسم المنتج او بالباركود" class="form-control"  />
                                         </div>
                                     </div>
                                 </div>
@@ -911,19 +911,19 @@
                                 </div>
                                 <div class="col-12 totals" style="border-top: 2px solid #e4e6fc; padding-top: 10px;">
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4  d-none">
                                             <span class="totals-title">{{trans('file.Items')}}</span><span id="item">0</span>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4  d-none">
                                             <span class="totals-title">{{trans('file.Total')}}</span><span id="subtotal">0.00</span>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4  d-none">
                                             <span class="totals-title">{{trans('file.Discount')}} <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#order-discount-modal"> <i class="dripicons-document-edit"></i></button></span><span id="discount">0.00</span>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4 d-none" >
                                             <span class="totals-title">{{trans('file.Coupon')}} <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#coupon-modal"><i class="dripicons-document-edit"></i></button></span><span id="coupon-text">0.00</span>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-4 d-none">
                                             <span class="totals-title">{{trans('file.Tax')}} <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#order-tax"><i class="dripicons-document-edit"></i></button></span><span id="tax">0.00</span>
                                         </div>
                                         <div class="col-sm-4">
@@ -931,10 +931,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 row">
+                                    <div class="col-md-6 text-center mt-2">
+                                        <div class="payment-amount p-2">
+                                            <h2>عدد الاصناف <div class="item" style="font-size: xx-large">0</div></h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-center mt-2">
+                                        <div class="payment-amount p-2">
+                                            <h2>{{trans('file.grand total')}} <div class="grand-total" style="font-size: xx-large">0.00</div></h2>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="payment-amount">
+                    <div class="payment-amount d-none">
                         <h2>{{trans('file.grand total')}} <span id="grand-total">0.00</span></h2>
                     </div>
                     <div class="payment-options" style="text-align: center" >
@@ -1251,121 +1263,33 @@
                       </div>
                     </nav>
                 </header>
-                <div class="filter-window">
-                    <div class="category mt-3">
-                        <div class="row ml-2 mr-2 px-2">
-                            <div class="col-7">Choose category</div>
-                            <div class="col-5 text-right">
-                                <span class="btn btn-default btn-sm">
-                                    <i class="dripicons-cross"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row ml-2 mt-3">
-                            @foreach($lims_category_list as $category)
-                            <div class="col-md-3 category-img text-center" data-category="{{$category->id}}">
-                                @if($category->image)
-                                    <img  src="{{url('public/images/category', $category->image)}}" />
-                                @else
-                                    <img  src="{{url('public/images/product/zummXD2dvAtI.png')}}" />
-                                @endif
-                                <p class="text-center">{{$category->name}}</p>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="brand mt-3">
-                        <div class="row ml-2 mr-2 px-2">
-                            <div class="col-7">Choose brand</div>
-                            <div class="col-5 text-right">
-                                <span class="btn btn-default btn-sm">
-                                    <i class="dripicons-cross"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row ml-2 mt-3">
-                            @foreach($lims_brand_list as $brand)
-                            @if($brand->image)
-                                <div class="col-md-3 brand-img text-center" data-brand="{{$brand->id}}">
-                                    <img  src="{{url('public/images/brand',$brand->image)}}" />
-                                    <p class="text-center">{{$brand->title}}</p>
-                                </div>
-                            @else
-                                <div class="col-md-3 brand-img" data-brand="{{$brand->id}}">
-                                    <img  src="{{url('public/images/product/zummXD2dvAtI.png')}}" />
-                                    <p class="text-center">{{$brand->title}}</p>
-                                </div>
-                            @endif
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-          <div class="row">
-                    <div class="col-md-4">
-                        <button class="btn btn-block btn-primary" id="category-filter">{{trans('file.category')}}</button>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-block btn-info" id="brand-filter">{{trans('file.Brand')}}</button>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-block btn-danger" id="featured-filter">{{trans('file.Featured')}}</button>
-                    </div>
-                    <div class="col-md-12 mt-1 table-container">
-                        <table id="product-table" class="table no-shadow product-list">
-                            <thead class="d-none">
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @for ($i=0; $i < ceil($product_number/5); $i++)
-                                <tr>
-                                    <td class="product-img sound-btn" title="{{$lims_product_list[0+$i*5]->name}}" data-product ="{{$lims_product_list[0+$i*5]->code . ' (' . $lims_product_list[0+$i*5]->name . ')'}}"><img  src="{{url('public/images/product',$lims_product_list[0+$i*5]->base_image)}}" width="100%" />
-                                        <p>{{$lims_product_list[0+$i*5]->name}}</p>
-                                        <span>{{$lims_product_list[0+$i*5]->code}}</span>
-                                    </td>
-                                    @if(!empty($lims_product_list[1+$i*5]))
-                                    <td class="product-img sound-btn" title="{{$lims_product_list[1+$i*5]->name}}" data-product ="{{$lims_product_list[1+$i*5]->code . ' (' . $lims_product_list[1+$i*5]->name . ')'}}"><img  src="{{url('public/images/product',$lims_product_list[1+$i*5]->base_image)}}" width="100%" />
-                                        <p>{{$lims_product_list[1+$i*5]->name}}</p>
-                                        {{-- <span>{{$lims_product_list[1+$i*5]->code}}</span> --}}
-                                    </td>
-                                    @else
-                                    <td style="border:none;"></td>
-                                    @endif
-                                    @if(!empty($lims_product_list[2+$i*5]))
-                                    <td class="product-img sound-btn" title="{{$lims_product_list[2+$i*5]->name}}" data-product ="{{$lims_product_list[2+$i*5]->code . ' (' . $lims_product_list[2+$i*5]->name . ')'}}"><img  src="{{url('public/images/product',$lims_product_list[2+$i*5]->base_image)}}" width="100%" />
-                                        <p>{{$lims_product_list[2+$i*5]->name}}</p>
-                                        {{-- <span>{{$lims_product_list[2+$i*5]->code}}</span> --}}
-                                    </td>
-                                    @else
-                                    <td style="border:none;"></td>
-                                    @endif
-                                    @if(!empty($lims_product_list[3+$i*5]))
-                                    <td class="product-img sound-btn" title="{{$lims_product_list[3+$i*5]->name}}" data-product ="{{$lims_product_list[3+$i*5]->code . ' (' . $lims_product_list[3+$i*5]->name . ')'}}"><img  src="{{url('public/images/product',$lims_product_list[3+$i*5]->base_image)}}" width="100%" />
-                                        <p>{{$lims_product_list[3+$i*5]->name}}</p>
-                                        {{-- <span>{{$lims_product_list[3+$i*5]->code}}</span> --}}
-                                    </td>
-                                    @else
-                                    <td style="border:none;"></td>
-                                    @endif
-                                    @if(!empty($lims_product_list[4+$i*5]))
-                                    <td class="product-img sound-btn" title="{{$lims_product_list[4+$i*5]->name}}" data-product ="{{$lims_product_list[4+$i*5]->code . ' (' . $lims_product_list[4+$i*5]->name . ')'}}"><img  src="{{url('public/images/product',$lims_product_list[4+$i*5]->base_image)}}" width="100%" />
-                                        <p>{{$lims_product_list[4+$i*5]->name}}</p>
-                                        {{-- <span>{{$lims_product_list[4+$i*5]->code}}</span> --}}
-                                    </td>
-                                    @else
-                                    <td style="border:none;"></td>
-                                    @endif
-                                </tr>
-                            @endfor
-                            </tbody>
-                        </table>
-                    </div>
+
+          <div class="row p-4">
+              <div class="col-md-12">
+                  <div class="search-box form-group text-right">
+                      <h2>ابحث عن معلومات منتج (للعرض) فقط</h2>
+                  </div>
+                  <div class="search-box form-group">
+                      <input type="text" name="product_code_name_check" id="lims_productcodeSearchCheck" placeholder="ابحث عن اسم المنتج او بالباركود" class="form-control"  />
+                  </div>
               </div>
+                    <div class="col-md-12 text-center mt-2 p-5 d-none prod-card">
+                        <figure class="card card-product">
+                            <div class="img-wrap"><img class="prod-image" src="https://s9.postimg.org/tupxkvfj3/image.jpg"></div>
+                            <figcaption class="info-wrap">
+                                <h4 class="title prod-name">Another name of item</h4>
+                                <div class="rating-wrap">
+                                    <div class="label-rating">الكمية:</div>
+                                    <div class="label-rating prod-qty">154 orders </div>
+                                </div> <!-- rating-wrap.// -->
+                            </figcaption>
+                            <div class="bottom-wrap">
+                                <div class="price-wrap h1">
+                                    <span class="price-new prod-price">$1280</span> جنيه
+                                </div> <!-- price-wrap.// -->
+                            </div> <!-- bottom-wrap.// -->
+                        </figure>
+                    </div>
             </div>
             <!-- product edit modal -->
             <div id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
@@ -1397,7 +1321,7 @@
                                             $tax_name_all[] = $tax->name;
                                             $tax_rate_all[] = $tax->rate;
                                         }
-                                    ?>
+//                                    ?>
                                     <div class="col-md-4 form-group">
                                         <label>{{trans('file.Tax Rate')}}</label>
                                         <select name="edit_tax_rate" class="form-control selectpicker">
@@ -1566,13 +1490,13 @@
                 </div>
             </div>
             <!-- add cash register modal -->
-            <div id="cash-register-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" class="modal fade text-left">
+            <div id="cash-register-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                 <div role="document" class="modal-dialog">
                   <div class="modal-content">
                     {!! Form::open(['route' => 'cashierRegister.start', 'method' => 'post']) !!}
                     <div class="modal-header">
                       <h5 id="exampleModalLabel" class="modal-title">بدء شيفت جديد</h5>
-                      
+
                     </div>
                     <div class="modal-body">
                       <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
@@ -1843,7 +1767,7 @@ warehouse_id = 1;
         $.each(product_code, function(index) {
             lims_product_array.push(product_code[index] + ' (' + product_name[index] + ')');
         });
-    }); 
+    });
 
     isCashRegisterAvailable(warehouse_id);
 });
@@ -1861,7 +1785,7 @@ warehouse_id = 1;
        }
    }
   });
-  
+
     $("ul#sale").siblings('a').attr('aria-expanded','true');
     $("ul#sale").addClass("show");
     $("ul#sale #sale-pos-menu").addClass("active");
@@ -2105,6 +2029,17 @@ if(keyboard_active==1){
           collision: 'flip'
         }
     });
+
+    $('#lims_productcodeSearchCheck').keyboard().autocomplete().addAutocomplete({
+        // add autocomplete window positioning
+        // options here (using position utility)
+        position: {
+            of: '#lims_productcodeSearchCeck',
+            my: 'top+18px',
+            at: 'center',
+            collision: 'flip'
+        }
+    });
 }
 
   $("li#notification-icon").on("click", function (argument) {
@@ -2246,7 +2181,7 @@ function isCashRegisterAvailable(warehouse_id) {
         url: 'cash-register/check-cashier-availability',
         type: "GET",
         success:function(data) {
-            
+
             if(data == 'false') {
               $("#register-details-btn").addClass('d-none');
               $('#cash-register-modal select[name=warehouse_id]').val(1);
@@ -2278,6 +2213,19 @@ if(keyboard_active==1){
         //     alert('Please select Warehouse!');
         // }
     });
+    $('#lims_productcodeSearchCheck').bind('keyboardChange', function (e, keyboard, el) {
+        var customer_id = $('#customer_id').val();
+        var warehouse_id = $('select[name="warehouse_id"]').val();
+        temp_data = $('#lims_productcodeSearchCheck').val();
+        // if(!customer_id){
+        //     $('#lims_productcodeSearch').val(temp_data.substring(0, temp_data.length - 1));
+        //     alert('Please select Customer!');
+        // }
+        // else if(!warehouse_id){
+        //     $('#lims_productcodeSearch').val(temp_data.substring(0, temp_data.length - 1));
+        //     alert('Please select Warehouse!');
+        // }
+    });
 }
 else{
     $('#lims_productcodeSearch').on('input', function(){
@@ -2290,6 +2238,20 @@ else{
         }
         else if(!warehouse_id){
             $('#lims_productcodeSearch').val(temp_data.substring(0, temp_data.length - 1));
+            alert('Please select Warehouse!');
+        }
+
+    });
+    $('#lims_productcodeSearchCheck').on('input', function(){
+        var customer_id = $('#customer_id').val();
+        var warehouse_id = $('#warehouse_id').val();
+        temp_data = $('#lims_productcodeSearchCheck').val();
+        if(!customer_id){
+            // $('#lims_productcodeSearch').val(temp_data.substring(0, temp_data.length - 1));
+            // alert('Please select Customer!');
+        }
+        else if(!warehouse_id){
+            $('#lims_productcodeSearchCheck').val(temp_data.substring(0, temp_data.length - 1));
             alert('Please select Warehouse!');
         }
 
@@ -2411,7 +2373,8 @@ $('select[name="warehouse_id"]').on('change', function() {
 });
 
 var lims_productcodeSearch = $('#lims_productcodeSearch');
- 
+var lims_productcodeSearchCheck = $('#lims_productcodeSearchCheck');
+
 lims_productcodeSearch.autocomplete({
     source: function(request, response) {
         var term = request.term;
@@ -2429,8 +2392,7 @@ lims_productcodeSearch.autocomplete({
             return item[0] == splitTerm;
             // return matcherSplit.test(item);
         });
-        console.log(checkSplit);
-        
+
         if (checkSplit.length == 1){
             response($.grep(lims_product_array, function(item) {
                 return matcherSplit.test(item);
@@ -2438,10 +2400,10 @@ lims_productcodeSearch.autocomplete({
         }else{
             response($.grep(lims_product_array, function(item) {
                 return matcher.test(item);
-            }));    
+            }));
         }
-        
-        
+
+
     },
     response: function(event, ui) {
         if (ui.content.length == 1) {
@@ -2456,6 +2418,51 @@ lims_productcodeSearch.autocomplete({
         var data = ui.item.value;
         var code =$("input[name='product_code_name']").val();
             productSearch(data,code);
+    },
+});
+lims_productcodeSearchCheck.autocomplete({
+    source: function(request, response) {
+        var term = request.term;
+        var splitTerm = term.substr(0, 6);
+        // console.log(lims_product_array);
+        // console.log(request.term);
+        var matcherSplit = new RegExp(".?" + $.ui.autocomplete.escapeRegex(splitTerm), "i");
+        var matcher = new RegExp(".?" + $.ui.autocomplete.escapeRegex(request.term), "i");
+        var checkSplit = $.grep(lims_product_array, function(item) {
+            item = item.split(' ');
+            // console.log(item[0]);
+            // console.log(splitTerm);
+            // console.log(item[0] == splitTerm);
+            // console.log(item[0] === splitTerm);
+            return item[0] == splitTerm;
+            // return matcherSplit.test(item);
+        });
+
+        if (checkSplit.length == 1){
+            response($.grep(lims_product_array, function(item) {
+                return matcherSplit.test(item);
+            }));
+        }else{
+            response($.grep(lims_product_array, function(item) {
+                return matcher.test(item);
+            }));
+        }
+
+
+    },
+    response: function(event, ui) {
+        if (ui.content.length == 1) {
+            var data = ui.content[0].value;
+            $(this).autocomplete( "close" );
+            var code =$("input[name='product_code_name_check']").val();
+            productSearchCheck(data,code);
+            $("input[name='product_code_name_check']").val('');
+        };
+    },
+    select: function(event, ui) {
+        var data = ui.item.value;
+        var code =$("input[name='product_code_name_check']").val();
+            productSearchCheck(data,code);
     },
 });
 
@@ -2480,7 +2487,48 @@ $("#myTable").on('click', '.plus', function() {
 });
 
 $("#myTable").on('click', '.minus', function() {
-    rowindex = $(this).closest('tr').index();
+    @if( Auth::user()->role_id != 4)
+    var product_id = $(this).closest('tr').find('input.product-id').val();
+    Swal.fire({
+        title: 'اكتب كود المشرف المؤقت',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'حذف كمية',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+            return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `Request failed: ${error}`
+                    )
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed && result.value == 0) {
+            Swal.fire({
+                title: `الكود غير صحيح!`
+            })
+        }else if(result.isConfirmed ){
+            doMinus($(this));
+        }
+    })
+    @else
+    doMinus($(this));
+    @endif
+
+});
+function doMinus(that){
+    rowindex = that.closest('tr').index();
     var qty = parseFloat($('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val()) - 1;
     if (qty > 0) {
         $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(qty);
@@ -2488,7 +2536,7 @@ $("#myTable").on('click', '.minus', function() {
         qty = 1;
     }
     checkQuantity(String(qty), true);
-});
+}
 
 $("#myTable").on("change", ".batch-no", function () {
     rowindex = $(this).closest('tr').index();
@@ -2511,14 +2559,71 @@ $("#myTable").on("change", ".batch-no", function () {
 });
 
 //Change quantity
-$("#myTable").on('input', '.qty', function() {
-    rowindex = $(this).closest('tr').index();
-    if($(this).val() < 0 && $(this).val() != '') {
-      $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(1);
-      alert("Quantity can't be less than 0");
+$("#myTable").on('keyup', '.qty', function(event) {
+    var oldValue = event.target.value;
+    $(this).attr('old-data',oldValue)
+
+})
+$("#myTable").on('input', '.qty', function(e) {
+    console.log($(this).val())
+    console.log($(this).attr('old-data'))
+    // console.log($(this).attr('old-data')  $(this).val())
+    @if( Auth::user()->role_id != 6 )
+    if ( $(this).val() <= $(this).attr('old-data') ) {
+        var product_id = $(this).closest('tr').find('input.product-id').val();
+        Swal.fire({
+            title: 'اكتب كود المشرف المؤقت',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'حـذف',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed && result.value == 0) {
+                $(this).val($(this).attr('old-data'));
+                Swal.fire({
+                    title: `الكود غير صحيح!`
+                })
+            } else if (result.isConfirmed) {
+                doQtyUpdate($(this));
+            } else {
+                $(this).val($(this).attr('old-data'));
+            }
+        })
+    }else {
+        doQtyUpdate($(this));
     }
-    checkQuantity($(this).val(), true);
+    @else
+    doQtyUpdate($(this));
+    @endif
+
 });
+
+function doQtyUpdate(that){
+    rowindex = that.closest('tr').index();
+    if(that.val() < 0 && that.val() != '') {
+        $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(1);
+        alert("Quantity can't be less than 0");
+    }
+    checkQuantity(that.val(), true);
+}
 
 $("#myTable").on('click', '.qty', function() {
     rowindex = $(this).closest('tr').index();
@@ -2549,54 +2654,98 @@ $(document).on('click', '.product-img', function() {
 });
 //Delete product
 $("table.order-list tbody").on("click", ".ibtnDel", function(event) {
-    var audio = $("#mysoundclip2")[0];
-    audio.play();
-    rowindex = $(this).closest('tr').index();
-    product_price.splice(rowindex, 1);
-    product_discount.splice(rowindex, 1);
-    tax_rate.splice(rowindex, 1);
-    tax_name.splice(rowindex, 1);
-    tax_method.splice(rowindex, 1);
-    unit_name.splice(rowindex, 1);
-    unit_operator.splice(rowindex, 1);
-    unit_operation_value.splice(rowindex, 1);
 
-    localStorageProductId.splice(rowindex, 1);
-    localStorageQty.splice(rowindex, 1);
-    localStorageSaleUnit.splice(rowindex, 1);
-    localStorageProductDiscount.splice(rowindex, 1);
-    localStorageTaxRate.splice(rowindex, 1);
-    localStorageNetUnitPrice.splice(rowindex, 1);
-    localStorageTaxValue.splice(rowindex, 1);
-    localStorageSubTotalUnit.splice(rowindex, 1);
-    localStorageSubTotal.splice(rowindex, 1);
-    localStorageProductCode.splice(rowindex, 1);
 
-    localStorageTaxName.splice(rowindex, 1);
-    localStorageTaxMethod.splice(rowindex, 1);
-    localStorageTempUnitName.splice(rowindex, 1);
-    localStorageSaleUnitOperator.splice(rowindex, 1);
-    localStorageSaleUnitOperationValue.splice(rowindex, 1);
+    @if( Auth::user()->role_id != 1)
+    var product_id = $(this).closest('tr').find('input.product-id').val();
+    Swal.fire({
+        title: 'اكتب كود المشرف المؤقت',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'حـذف',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+            return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `Request failed: ${error}`
+                    )
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed && result.value == 0) {
+            Swal.fire({
+                title: `الكود غير صحيح!`
+            })
+        }else if(result.isConfirmed ){
+            doDel($(this));
+        }
+    })
+    @else
+        doDel($(this));
+    @endif
 
-    localStorage.setItem("localStorageProductId", localStorageProductId);
-    localStorage.setItem("localStorageQty", localStorageQty);
-    localStorage.setItem("localStorageSaleUnit", localStorageSaleUnit);
-    localStorage.setItem("localStorageProductCode", localStorageProductCode);
-    localStorage.setItem("localStorageProductDiscount", localStorageProductDiscount);
-    localStorage.setItem("localStorageTaxRate", localStorageTaxRate);
-    localStorage.setItem("localStorageTaxName", localStorageTaxName);
-    localStorage.setItem("localStorageTaxMethod", localStorageTaxMethod);
-    localStorage.setItem("localStorageTempUnitName", localStorageTempUnitName);
-    localStorage.setItem("localStorageSaleUnitOperator", localStorageSaleUnitOperator);
-    localStorage.setItem("localStorageSaleUnitOperationValue", localStorageSaleUnitOperationValue);
-    localStorage.setItem("localStorageNetUnitPrice", localStorageNetUnitPrice);
-    localStorage.setItem("localStorageTaxValue", localStorageTaxValue);
-    localStorage.setItem("localStorageSubTotalUnit", localStorageSubTotalUnit);
-    localStorage.setItem("localStorageSubTotal", localStorageSubTotal);
+    function doDel(event){
+        var audio = $("#mysoundclip2")[0];
+        audio.play();
+        rowindex = event.closest('tr').index();
+        product_price.splice(rowindex, 1);
+        product_discount.splice(rowindex, 1);
+        tax_rate.splice(rowindex, 1);
+        tax_name.splice(rowindex, 1);
+        tax_method.splice(rowindex, 1);
+        unit_name.splice(rowindex, 1);
+        unit_operator.splice(rowindex, 1);
+        unit_operation_value.splice(rowindex, 1);
 
-    $(this).closest("tr").remove();
-    localStorage.setItem("tbody-id", $("table.order-list tbody").html());
-    calculateTotal();
+        localStorageProductId.splice(rowindex, 1);
+        localStorageQty.splice(rowindex, 1);
+        localStorageSaleUnit.splice(rowindex, 1);
+        localStorageProductDiscount.splice(rowindex, 1);
+        localStorageTaxRate.splice(rowindex, 1);
+        localStorageNetUnitPrice.splice(rowindex, 1);
+        localStorageTaxValue.splice(rowindex, 1);
+        localStorageSubTotalUnit.splice(rowindex, 1);
+        localStorageSubTotal.splice(rowindex, 1);
+        localStorageProductCode.splice(rowindex, 1);
+
+        localStorageTaxName.splice(rowindex, 1);
+        localStorageTaxMethod.splice(rowindex, 1);
+        localStorageTempUnitName.splice(rowindex, 1);
+        localStorageSaleUnitOperator.splice(rowindex, 1);
+        localStorageSaleUnitOperationValue.splice(rowindex, 1);
+
+        localStorage.setItem("localStorageProductId", localStorageProductId);
+        localStorage.setItem("localStorageQty", localStorageQty);
+        localStorage.setItem("localStorageSaleUnit", localStorageSaleUnit);
+        localStorage.setItem("localStorageProductCode", localStorageProductCode);
+        localStorage.setItem("localStorageProductDiscount", localStorageProductDiscount);
+        localStorage.setItem("localStorageTaxRate", localStorageTaxRate);
+        localStorage.setItem("localStorageTaxName", localStorageTaxName);
+        localStorage.setItem("localStorageTaxMethod", localStorageTaxMethod);
+        localStorage.setItem("localStorageTempUnitName", localStorageTempUnitName);
+        localStorage.setItem("localStorageSaleUnitOperator", localStorageSaleUnitOperator);
+        localStorage.setItem("localStorageSaleUnitOperationValue", localStorageSaleUnitOperationValue);
+        localStorage.setItem("localStorageNetUnitPrice", localStorageNetUnitPrice);
+        localStorage.setItem("localStorageTaxValue", localStorageTaxValue);
+        localStorage.setItem("localStorageSubTotalUnit", localStorageSubTotalUnit);
+        localStorage.setItem("localStorageSubTotal", localStorageSubTotal);
+
+        event.closest("tr").remove();
+        localStorage.setItem("tbody-id", $("table.order-list tbody").html());
+        calculateTotal();
+    }
+
 });
 
 //Edit product
@@ -2908,6 +3057,23 @@ function productSearch(data, code) {
         }
     });
 }
+function productSearchCheck(data, code) {
+    $.ajax({
+        type: 'GET',
+        url: 'sales/lims_product_search',
+        data: {
+            data: data
+        },
+        success: function(data) {
+            $('.prod-card .prod-name').text(data[0]);
+            $('.prod-card .prod-image').attr('src',data[14]);
+            $('.prod-card .prod-price').text(data[2]);
+            $('.prod-card .prod-qty').text(data[15]);
+            $('.prod-card').removeClass('d-none');
+            $("input[name='product_code_name_check']").val('');
+        }
+    });
+}
 
 function addNewProduct(data, code){
     var newRow = $("<tr>");
@@ -2921,7 +3087,7 @@ function addNewProduct(data, code){
         weight = (weight/10000).toFixed(3);
     }
     pos = product_code.indexOf(data[1]);
-    cols += '<td class="col-sm-4 product-title"><span type="button" class="edit-product btn-link" data-toggle="modal" data-target="#editModal"><strong>' + data[0] + '</strong></span><br>' + data[1] + '<p>In Stock: <span class="in-stock"></span></p></td>';
+    cols += '<td class="col-sm-4 product-title"><span type="button" class="edit-product btn-link" data-target="#editModal"><strong>' + data[0] + '</strong></span><br>' + data[1] + '<p>الكمية: <span class="in-stock"></span></p></td>';
     if(data[12]) {
         cols += '<td class="col-sm-2 hidden"><input type="hidden" class="form-control batch-no" value="'+batch_no[pos]+'" required/> <input type="hidden" class="product-batch-id" name="product_batch_id[]" value="'+product_batch_id[pos]+'"/> </td>';
     }
@@ -2931,9 +3097,13 @@ function addNewProduct(data, code){
     cols += '<td class="col-sm-2 product-price"></td>';
 
     if (isW){
-        cols += '<td class="col-sm-3"><input type="text" name="qty[]" maxlength="3" readonly class="form-control qty numkey input-number d-inline" step="any" required><span class="w_unit_name"></span></td>';    
+        cols += '<td class="col-sm-3"><input type="text" name="qty[]" maxlength="3" readonly class="form-control qty numkey input-number d-inline" readonly step="any" required><span class="w_unit_name"></span></td>';
     }else{
-        cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button" class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';    
+        if (role_id != 1){
+            cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" disabled class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input readonly type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button"  class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';
+        }else{
+            cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input readonly type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button" class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';
+        }
     }
 
     cols += '<td class="col-sm-2 sub-total"></td>';
@@ -2970,26 +3140,26 @@ function addNewProduct(data, code){
         // console.log(parseFloat(data[2] * currency['exchange_rate']) + parseFloat(data[2] * currency['exchange_rate'] * customer_group_rate));
         product_price.splice(rowindex, 0, parseFloat(data[2] * currency['exchange_rate']) );
     }
-    
+
     product_discount.splice(rowindex, 0, '0.00');
     tax_rate.splice(rowindex, 0, parseFloat(data[3]));
     tax_name.splice(rowindex, 0, data[4]);
     tax_method.splice(rowindex, 0, data[5]);
     unit_name.splice(rowindex, 0, data[6]);
-    
+
     unit_operator.splice(rowindex, 0, data[7]);
     unit_operation_value.splice(rowindex, 0, data[8]);
     is_imei.splice(rowindex, 0, data[13]);
     if (isW){
         $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.qty').val(weight);
-        
+
     }else{
         $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.qty').val(1);
     }
     // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.w_unit_name').text('('+unit_name+')');
     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.product_price').val(product_price[rowindex]*weight);
-    
-    
+
+
     localStorageQty.splice(rowindex, 0, 1);
     localStorageProductId.splice(rowindex, 0, data[9]);
     localStorageProductCode.splice(rowindex, 0, data[1]);
@@ -3090,6 +3260,7 @@ function couponDiscount() {
                     if(parseFloat($('input[name="grand_total"]').val()) >= value['minimum_amount']) {
                         $('input[name="grand_total"]').val($('input[name="grand_total"]').val() - value['amount']);
                         $('#grand-total').text(parseFloat($('input[name="grand_total"]').val()).toFixed(2));
+                        $('.grand-total').text(parseFloat($('input[name="grand_total"]').val()).toFixed(2));
                         if(!$('input[name="coupon_active"]').val())
                             alert('Congratulation! You got '+value['amount']+' '+currency+' discount');
                         $(".coupon-check").prop("disabled",true);
@@ -3109,6 +3280,7 @@ function couponDiscount() {
                     grand_total = grand_total - coupon_discount;
                     $('input[name="grand_total"]').val(grand_total);
                     $('#grand-total').text(parseFloat(grand_total).toFixed(2));
+                    $('.grand-total').text(parseFloat(grand_total).toFixed(2));
                     if(!$('input[name="coupon_active"]').val())
                             alert('Congratulation! You got '+value['amount']+'% discount');
                     $(".coupon-check").prop("disabled",true);
@@ -3145,7 +3317,7 @@ function checkQuantity(sale_qty, flag) {
         if (total_qty > parseFloat(product_qty[pos])) {
             // alert('لقد تجاوزت الكمية الموجودة بالمخزن!');
             if (flag) {
-                
+
                 console.log(sale_qty);
                 // sale_qty = sale_qty.substring(0, sale_qty.length - 1);
                 $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.qty').val(sale_qty);
@@ -3313,12 +3485,14 @@ function calculateGrandTotal() {
     grand_total -= coupon_discount;
 
     $('#item').text(item);
+    $('.item').text(item);
     $('input[name="item"]').val($('table.order-list tbody tr:last').index() + 1);
     $('#subtotal').text(subtotal.toFixed(2));
     $('#tax').text(order_tax.toFixed(2));
     $('input[name="order_tax"]').val(order_tax.toFixed(2));
     $('#shipping-cost').text(shipping_cost.toFixed(2));
     $('#grand-total').text(grand_total.toFixed(2));
+    $('.grand-total').text(grand_total.toFixed(2));
     $('input[name="grand_total"]').val(grand_total.toFixed(2));
 }
 
@@ -3412,7 +3586,46 @@ function confirmCancel() {
     var audio = $("#mysoundclip2")[0];
     audio.play();
     if (confirm("هل انت متاكد من الغاء الاوردر الحالي؟")) {
-        cancel($('table.order-list tbody tr:last').index());
+        @if( Auth::user()->role_id != 1)
+        var product_id = $(this).closest('tr').find('input.product-id').val();
+        Swal.fire({
+            title: 'اكتب كود المشرف المؤقت',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'الغاء الاودرد الحالي',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`{{url('/check-code')}}/${login}?product_id=0`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed && result.value == 0) {
+                Swal.fire({
+                    title: `الكود غير صحيح!`
+                })
+            }else if(result.isConfirmed ){
+                cancel($('table.order-list tbody tr:last').index());
+            }
+        })
+        @else
+           cancel($('table.order-list tbody tr:last').index());
+        @endif
+
+
     }
     return false;
 }

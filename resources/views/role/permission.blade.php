@@ -1318,6 +1318,19 @@
 								                </div>
 								            </div>
 						                </span>
+
+						                <span>
+						                    <div aria-checked="false" aria-disabled="false">
+								                <div class="checkbox">
+							                    	@if(in_array("admin_code", $all_permission))
+							                    	<input type="checkbox" value="1" id="admin_code" name="admin_code" checked>
+							                    	@else
+							                    	<input type="checkbox" value="1" id="admin_code" name="admin_code">
+							                    	@endif
+								                    <label for="admin_code" class="padding05">كود المشرف</label>
+								                </div>
+								            </div>
+						                </span>
 						                <span>
 						                    <div aria-checked="false" aria-disabled="false">
 								                <div class="checkbox">

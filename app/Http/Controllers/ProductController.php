@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\QtyHistory;
 use Illuminate\Http\Request;
 use Keygen;
 use App\Brand;
@@ -43,7 +44,8 @@ class ProductController extends Controller
                     $start_date = "";
                     $end_date = "";
                 }
-            return view('product.index', compact('all_permission','start_date', 'end_date'));
+            $lims_category_list = Category::where('is_active', true)->get();
+            return view('product.index', compact('all_permission','start_date', 'end_date','lims_category_list'));
         } else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
@@ -64,9 +66,18 @@ class ProductController extends Controller
             11 => 'stock_worth'
         );
 
-        $totalData = Product::where('is_active', true)->count();
+        $totalData = Product::where('is_active', true);
+        if ($request->has('category_id') && !empty($request->category_id) ){
+            $category_id = $request->category_id;
+            $totalFiltered = $totalData->whereHas('category', function ($q) use ($category_id){
+                $q->where('category_id', $category_id);
+            });
+        }
+        if ($request->has('is_promotion') && !empty($request->is_promotion) ){
+            $totalFiltered = $totalData->where('promotion', 1);
+        }
+        $totalData = $totalData->count();
         $totalFiltered = $totalData;
-
         if ($request->input('length') != -1)
             $limit = $request->input('length');
         else
@@ -75,12 +86,22 @@ class ProductController extends Controller
         $order = 'products.' . $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         if (empty($request->input('search.value'))) {
+
             $products = Product::with('category', 'brand', 'unit')->offset($start);
-            // if ($request->has('start_date') && !empty($request->start_date) ){
-            //     $dateS = new Carbon($request->start_date);
-            //     $dateE = new Carbon($request->end_date);
-            //     $products = $products->whereBetween('created_at',[$dateS->format('Y-m-d')." 00:00:00", $dateE->format('Y-m-d')." 23:59:59"]);
-            // }
+             if ($request->has('start_date') && !empty($request->start_date) ){
+                 $dateS = new Carbon($request->start_date);
+                 $dateE = new Carbon($request->end_date);
+                 $products = $products->whereBetween('created_at',[$dateS->format('Y-m-d')." 00:00:00", $dateE->format('Y-m-d')." 23:59:59"]);
+             }
+            if ($request->has('category_id') && !empty($request->category_id) ){
+                $category_id = $request->category_id;
+                $products = $products->whereHas('category', function ($q) use ($category_id){
+                    $q->where('category_id', $category_id);
+                });
+            }
+            if ($request->has('is_promotion') && !empty($request->is_promotion) ){
+                $products = $products->where('promotion', 1);
+            }
             $products = $products
                 ->where('is_active', true)
                 ->limit($limit)
@@ -93,7 +114,7 @@ class ProductController extends Controller
                 ->orWhereTranslationLike('name', "%$search%")
                 // ->join('categories', 'products.category_id', '=', 'categories.id')
                 // ->leftjoin('brands', 'products.brand_id', '=', 'brands.id')
-                // ->where([ 
+                // ->where([
                 //     ['products.is_active', true]
                 // ])
                 // ->whereTranslationLike('name', $search)
@@ -136,8 +157,15 @@ class ProductController extends Controller
                     ['brands.title', 'LIKE', "%{$search}%"],
                     ['brands.is_active', true],
                     ['products.is_active', true]
-                ])
-                ->count();
+                ]);
+
+                if ($request->has('category_id') && !empty($request->category_id) ){
+                    $category_id = $request->category_id;
+                    $totalFiltered = $totalFiltered->whereHas('category', function ($q) use ($category_id){
+                        $q->where('category_id', $category_id);
+                    });
+                }
+            $totalFiltered = $totalFiltered->count();
         }
         $data = array();
         if (!empty($products)) {
@@ -169,7 +197,8 @@ class ProductController extends Controller
                 if (config('currency_position') == 'prefix')
                     $nestedData['stock_worth'] = config('currency') . ' ' . ($product->qty * $product->price) . ' / ' . config('currency') . ' ' . ($product->qty * $product->cost);
                 else
-                    $nestedData['stock_worth'] = ($product->qty * $product->price) . ' ' . config('currency') . ' / ' . ($product->qty * $product->cost) . ' ' . config('currency');
+                    // $nestedData['stock_worth'] = ($product->qty * $product->price) . ' ' . config('currency') . ' / ' . ($product->qty * $product->cost) . ' ' . config('currency');
+                    $nestedData['stock_worth'] = 0;
                 //$nestedData['stock_worth'] = ($product->qty * $product->price).'/'.($product->qty * $product->cost);
 
                 $nestedData['options'] = '<div class="btn-group">
@@ -188,7 +217,7 @@ class ProductController extends Controller
                 if (in_array("products-delete", $request['all_permission']))
                     $nestedData['options'] .= \Form::open(["route" => ["products.destroy", $product->id], "method" => "DELETE"]) . '
                             <li>
-                              <button type="submit" class="btn btn-link" onclick="return confirmDelete()"><i class="fa fa-trash"></i> ' . trans("file.delete") . '</button> 
+                              <button type="submit" class="btn btn-link" onclick="return confirmDelete()"><i class="fa fa-trash"></i> ' . trans("file.delete") . '</button>
                             </li>' . \Form::close() . '
                         </ul>
                     </div>';
@@ -348,10 +377,12 @@ class ProductController extends Controller
     {
         $role = Role::firstOrCreate(['id' => Auth::user()->role_id]);
         if ($role->hasPermissionTo('products-edit')) {
-            $lims_product_list_without_variant = $this->productWithoutVariant();
-            $lims_product_list_with_variant = $this->productWithVariant();
+//            $lims_product_list_without_variant = $this->productWithoutVariant();
+//            $lims_product_list_with_variant = $this->productWithVariant();
+            $lims_product_list_without_variant = [];
+            $lims_product_list_with_variant = [];
             $lims_brand_list = Brand::where('is_active', true)->get();
-            $lims_category_list = Category::where('is_active', true)->get();
+            $lims_category_list = Category::where('is_active', true)->with('children')->get();
             $lims_unit_list = Unit::where('is_active', true)->get();
             $lims_tax_list = Tax::where('is_active', true)->get();
             $lims_product_data = Product::where('id', $id)->first();
@@ -529,6 +560,15 @@ class ProductController extends Controller
                     }
                 }
             }
+            if ( isset($data['qty']) && $data['qty'] != $data['old_qty'] ){
+                $dataQTY = [
+                    'product_id'=>$data['id'],
+                    'old_qty'=> $data['old_qty'],
+                    'new_qty'=> $data['qty'],
+                ];
+                QtyHistory::create($dataQTY);
+            }
+            $data['promotion'] = $data['promotion'] ?1 :0;
             $lims_product_data->update($data);
             $send_to_app = file_get_contents('https://app2.basketstore.net/api/posOperation/product/update/' . $lims_product_data->id);
             \Session::flash('edit_message', 'Product updated successfully');

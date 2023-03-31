@@ -1124,6 +1124,10 @@
         $('select[name=sale_status]').val(1).trigger('change');
         $('input#submit-button').trigger('click');
     @endif
+    @if ($payment_status_update)
+        $('select[name=payment_status]').val(4).trigger('change');
+        $('input#submit-button').trigger('click');
+    @endif
     
     
     </script>

@@ -22,10 +22,10 @@ class RoleController extends Controller
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
 
-    
+
     public function create()
     {
-        
+
     }
 
     public function store(Request $request)
@@ -891,6 +891,15 @@ class RoleController extends Controller
         }
         else
             $role->revokePermissionTo('empty_database');
+
+        if($request->has('admin_code')){
+            $permission = Permission::firstOrCreate(['name' => 'admin_code']);
+            if(!$role->hasPermissionTo('admin_code')){
+                $role->givePermissionTo($permission);
+            }
+        }
+        else
+            $role->revokePermissionTo('admin_code');
 
         if($request->has('send_notification')){
             $permission = Permission::firstOrCreate(['name' => 'send_notification']);

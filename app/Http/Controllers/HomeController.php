@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CashierDelHistory;
 use Illuminate\Http\Request;
 use App\Sale;
 use App\Returns;
@@ -44,6 +45,22 @@ class HomeController extends Controller
     public function dashboard()
     {
         return view('home');
+    }
+    public function checkCode(Request $request, $code)
+    {
+        $supervisor_code = User::where('supervisor_code', $code)->first();
+        if ( $supervisor_code ){
+            $supervisor_code->supervisor_code = null;
+            $supervisor_code->save();
+            $hisotry = new CashierDelHistory;
+            $hisotry->code =$code;
+            $hisotry->admin_id = $supervisor_code->id;
+            $hisotry->cashier_id = Auth::user()->id;
+            $hisotry->product_id = $request->product_id;
+            $hisotry->save();
+            return 1;
+        }
+        return 0;
     }
 
     public function sync()
@@ -210,7 +227,7 @@ class HomeController extends Controller
         $yearly_sale_amount = [];
 
         $general_setting = GeneralSetting::latest()->first();
-      
+
         $cashiers = User::whereIn("role_id", [4, 6])->with('cashierLogs')->orderby('id', 'DESC')->get();
         foreach ($cashiers as $key => $cashier) {
             $log = $cashier->cashierLogs()->latest()->first();
@@ -221,9 +238,13 @@ class HomeController extends Controller
         }
         $shift = Shift::whereNull('time_closed')->first();
         $mytime = Carbon::now();
-        // dd($cashiers);
-        //return $month;
-        return view('index', compact('mytime', 'shift', 'cashiers'));
+//        $supervisor_code = User::where('supervisor_code', $code)->first();
+        if ( !isset(Auth::user()->supervisor_code) ){
+            Auth::user()->supervisor_code = $this->generateCode();
+            Auth::user()->save();
+        }
+        $supervisor_code = Auth::user()->supervisor_code;
+        return view('index', compact('mytime', 'shift', 'cashiers','supervisor_code'));
     }
 
     public function dashboardFilter($start_date, $end_date)
@@ -685,5 +706,12 @@ class HomeController extends Controller
         $next_year = date('Y', strtotime('+1 month', strtotime($year . '-' . $month . '-01')));
         $next_month = date('m', strtotime('+1 month', strtotime($year . '-' . $month . '-01')));
         return view('user.my_transaction', compact('start_day', 'year', 'month', 'number_of_day', 'prev_year', 'prev_month', 'next_year', 'next_month', 'sale_generated', 'sale_grand_total', 'purchase_generated', 'purchase_grand_total', 'quotation_generated', 'quotation_grand_total'));
+    }
+    private function generateCode(){
+        $rand = rand(0001, 9999);
+        if ( User::where('supervisor_code',$rand)->count() ){
+            return $this->generateCode();
+        }
+        return $rand;
     }
 }

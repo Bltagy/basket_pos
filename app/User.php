@@ -12,7 +12,7 @@ class User extends Authenticatable
     use HasRoles;
 
     protected $fillable = [
-        'name', 'email', 'password',"phone","company_name", "role_id", "biller_id", "warehouse_id", "is_active", "is_deleted"
+        'name', 'email', 'password',"phone","company_name", "role_id", "biller_id", "warehouse_id", "is_active", "is_deleted", "supervisor_code"
     ];
 
     protected $hidden = [
@@ -39,9 +39,14 @@ class User extends Authenticatable
     public function cashierLogs() {
         return $this->hasMany('App\CashierLog');
     }
-    
+
     public function salesCount() {
         return $this->hasMany('App\Sale','delivery_id')->where('sale_status',3);
+
+    }
+
+    public function salesDueAmount() {
+        return $this->hasMany('App\Sale','delivery_id')->where('payment_status',2);
 
     }
 

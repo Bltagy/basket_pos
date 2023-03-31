@@ -53,9 +53,9 @@
                                 @endif
                                 <li class="divider"></li>
                                 @if(in_array("returns-delete", $all_permission))
-                                {{ Form::open(['route' => ['return-sale.destroy', $return->id], 'method' => 'DELETE'] ) }}
+                                {{ Form::open(['route' => ['return-sale.destroy', $return->id], 'method' => 'DELETE', 'id' => 'payment-form'] ) }}
                                 <li>
-                                    <button type="submit" class="btn btn-link" onclick="return confirmDelete()"><i class="dripicons-trash"></i> {{trans('file.delete')}}</button>
+                                    <button type="submit" class="btn btn-link confirmDeleteSale"><i class="dripicons-trash"></i> {{trans('file.delete')}}</button>
                                 </li>
                                 {{ Form::close() }}
                                 @endif
@@ -140,10 +140,98 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
-    function confirmDelete() {
+    $(".confirmDeleteSale").on("click", function(e) {
+        e.preventDefault();
         if (confirm("Are you sure want to delete?")) {
-            return true;
+            @if( Auth::user()->role_id != 1)
+            var product_id = 0;
+            Swal.fire({
+                title: 'اكتب كود المشرف المؤقت',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'استكمال',
+                cancelButtonText: 'ٌٌالغاء',
+                showLoaderOnConfirm: true,
+                preConfirm: (login) => {
+                    return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed && result.value == 0) {
+                    Swal.fire({
+                        title: `الكود غير صحيح!`
+                    })
+                    return false;
+                } else if (result.isConfirmed) {
+                    $('#payment-form').submit();
+                }
+            })
+            @else
+            $('#payment-form').submit();
+            @endif
+
+        }
+        return false;
+
+    })
+    function confirmDeleteSale() {
+        e.preventDefault();
+        if (confirm("Are you sure want to delete?")) {
+            @if( Auth::user()->role_id != 1)
+            var product_id = 0;
+            Swal.fire({
+                title: 'اكتب كود المشرف المؤقت',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'استكمال',
+                cancelButtonText: 'ٌٌالغاء',
+                showLoaderOnConfirm: true,
+                preConfirm: (login) => {
+                    return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed && result.value == 0) {
+                    Swal.fire({
+                        title: `الكود غير صحيح!`
+                    })
+                    return false;
+                } else if (result.isConfirmed) {
+                    $('#payment-form').submit();
+                }
+            })
+            @else
+            $('#payment-form').submit();
+            @endif
+
         }
         return false;
     }

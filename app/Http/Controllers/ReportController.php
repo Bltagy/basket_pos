@@ -1504,7 +1504,8 @@ class ReportController extends Controller
 //            $lims_product_sale_data[$key] = Product_Sale::where('sale_id', $sale->id)->get();
 //        }
         $lims_product_sale_data = Product_Sale::whereIn('sale_id', $lims_sale_ids)->get()->groupBy('sale_id')->toArray();
-        $lims_product_sale_data = array_values($lims_product_sale_data);
+        // $lims_product_sale_data = array_values($lims_product_sale_data);
+        // dd($lims_product_sale_data);
 //        $lims_product_sale_data = array_map('reset', $lims_product_sale_data);
 //          dd($lims_product_sale_data);
         // foreach ($lims_purchase_data as $key => $purchase) {

@@ -94,13 +94,14 @@
                     <tbody>
                         @foreach($lims_sale_data as $key=>$sale)
                         <tr>
-                            <td>{{$key}}</td>
+                            <td>{{$sale->id}}</td>
                             <td dir="ltr">{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->format('H:i A')}}</td>
                             {{-- <td>{{$sale->reference_no}}</td> --}}
                             <td>{{$sale->customer ? $sale->customer->name :""}}</td>
                             <td>{{$sale->warehouse->name}}</td>
                             <td>
-                                @foreach($lims_product_sale_data[$key] as $product_sale_data)
+                                @if ( isset($lims_product_sale_data[$sale->id]) )
+                                @foreach($lims_product_sale_data[$sale->id] as $product_sale_data)
                                 <?php
                                     $product = App\Product::find($product_sale_data['product_id']);
                                     if($product_sale_data['variant_id']) {
@@ -116,6 +117,7 @@
                                 @endif
                                 <br>
                                 @endforeach
+                                @endif
                             </td>
                             <td>{{number_format((float) $sale->grand_total, 2, '.', '')}}</td>
                             @if($sale->paid_amount)

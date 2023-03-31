@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>{{trans('file.Supplier')}}</label>
+                                            <label>{{trans('file.Supplier')}} *</label>
                                             <input type="hidden" name="supplier_id_hidden" value="{{ $lims_purchase_data->supplier_id }}" />
                                             <select name="supplier_id" class="selectpicker form-control" data-live-search="true" id="supplier-id" data-live-search-style="begins" title="Select supplier..." required>
                                                 @foreach($lims_supplier_list as $supplier)
@@ -114,17 +114,13 @@
                                                     <tr>
                                                     <?php
                                                         $product_data = \App\Product::find($product_purchase->product_id);
-                                                        if (!$product_data){
-                                                            // dd($product_purchase->product_id);  
-                                                            continue;
-                                                        }
                                                         if($product_purchase->variant_id) {
                                                             $product_variant_data = \App\ProductVariant::FindExactProduct($product_data->id, $product_purchase->variant_id)->select('item_code')->first();
                                                             $product_data->code = $product_variant_data->item_code;
                                                         }
 
                                                         $tax = DB::table('taxes')->where('rate', $product_purchase->tax_rate)->first();
-                                                         
+
                                                         $units = DB::table('units')->where('base_unit', $product_data->unit_id)->orWhere('id', $product_data->unit_id)->get();
 
                                                         $unit_name = array();

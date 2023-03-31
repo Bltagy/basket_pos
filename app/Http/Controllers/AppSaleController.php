@@ -238,6 +238,7 @@ class AppSaleController extends Controller
                 $nestedData['id'] = $sale->id;
                 $nestedData['key'] = $key;
                 $nestedData['reference_no'] = $sale->id;
+                $nestedData['sale_note'] = $sale->sale_note;
                 $nestedData['date'] = date(config('date_format'), strtotime($sale->created_at->toDateString())) . '<div style="color:red">' . \Carbon\Carbon::parse($sale->created_at)->diffForHumans() . '</div>';
                 $nestedData['biller'] = $sale->biller->name;
                 $nestedData['customer'] = $sale->customer->name . '<input type="hidden" class="deposit" value="' . ($sale->customer->deposit - $sale->customer->expense) . '" />' . '<input type="hidden" class="points" value="' . $sale->customer->points . '" />';
@@ -1524,7 +1525,8 @@ class AppSaleController extends Controller
             $lims_sale_data = Sale::find($id);
             $lims_product_sale_data = Product_Sale::where('sale_id', $id)->get();
             $has_complete = request()->has('complete');
-            return view('appSale.edit', compact('lims_customer_list', 'lims_warehouse_list', 'lims_biller_list', 'lims_tax_list', 'lims_sale_data', 'lims_product_sale_data','has_complete'));
+            $payment_status_update = request()->has('payment_status_update');
+            return view('appSale.edit', compact('lims_customer_list', 'lims_warehouse_list', 'lims_biller_list', 'lims_tax_list', 'lims_sale_data', 'lims_product_sale_data','has_complete','payment_status_update'));
         } else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }

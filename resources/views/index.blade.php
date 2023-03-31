@@ -112,12 +112,29 @@
       <!-- Counts Section -->
       @php
         $user = auth()->user();
-        $display = $user->role_id == 4 || $user->role_id == 6 ?" d-none":"";
+        $display = $user->role_id == 4 || $user->role_id == 6 || $user->role_id == 8 || $user->role_id == 11 ?" d-none":"";
+        $role = Spatie\Permission\Models\Role::find($user->role_id);
       @endphp
-      
+
+@if ($role->hasPermissionTo('admin_code'))
+    <section class="dashboard-counts">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>كود المشرف المؤقت :  <span style="text-align: right;font-size:xx-large">{{$supervisor_code}}</span></h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+@endif
       <section class="dashboard-counts{{$display}}">
         <div class="container-fluid">
-          
+
 
           <div class="row">
             <div class="col-md-12 form-group">
@@ -125,11 +142,11 @@
               <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>الكاشير</h4>
                 <div class="right-column">
-                  <div class="badge badge-primary h5 text-white" > 
+                  <div class="badge badge-primary h5 text-white" >
                     @if ($shift)
                     اليوم
                     {{$shift->date}}
-                    فتح من الساعة 
+                    فتح من الساعة
                     {{$shift->created_at->format('h:s A')}}
                     <a type="button" href="{{url('cashier-log/closeShift')}}" class="btn btn-danger">اغلاق اليوم</a>
                     @else
@@ -137,7 +154,7 @@
                     {{$mytime->toDateString()}}
                     غير مفتوح
                     @endif
-                    
+
                     </div>
                 </div>
               </div>
@@ -180,9 +197,9 @@
                                 <li>
                                 	<a href="{{ route('cashier-log.edit', $cashier->id) }}" class="btn btn-link"><i class="dripicons-document-edit"></i>الشيفتات</a>
                                 </li>
-                                
+
                             </ul>
-                        </div>  
+                        </div>
                         </td>
                         {{-- <td>{{$product->name}}<br>[{{$product->code}}]</td> --}}
                         {{-- <td>{{$sale->sold_qty}}</td> --}}
@@ -195,11 +212,11 @@
                 </div>
                 </div>
             </div>
-            
+
           </div>
         </div>
 
-        
+
       </section>
 
 

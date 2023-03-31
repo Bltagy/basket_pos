@@ -170,7 +170,7 @@ ul.pagination li {
         }
 
 #deliverMen .card-image {
-            z-index: 999;
+            z-index: 999999;
         }
 
 
@@ -204,7 +204,4 @@ ul.pagination li {
 #deliverMen .ad-title h5 {
         text-transform: uppercase;
         font-size: 18px;
-    }
-    i.dripicons-document-edit {
-        margin-left: 5px;
     }

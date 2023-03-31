@@ -211,8 +211,20 @@
                                         <input type="number" name="app_price" value="{{$lims_product_data->app_price}}" required class="form-control" step="any">
                                         <span class="validation-msg"></span>
                                     </div>
-                                    
+
                                 </div>
+                                @if( Auth::user()->role_id == 1 )
+                                    <div id="qty" class="col-md-12">
+                                        <div class="form-group">
+                                            <label><strong style="color: red">الكمية</strong>
+                                                <a href="#" data-toggle="modal" data-target="#importProduct" class="btn btn-primary"><i class="dripicons-copy"></i> التعديلات السابقة</a>
+                                            </label>
+                                            <input type="text" name="qty"  value="{{ $lims_product_data->qty }}" class="form-control">
+                                            <input type="hidden" name="old_qty"  value="{{ $lims_product_data->qty }}" >
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div id="alert-qty" class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Alert Quantity')}}</strong> </label>
@@ -386,7 +398,7 @@
                                 <div class="col-md-4 mt-3">
                                     <input type="hidden" name="promotion_hidden" >
                                     {{-- <input type="hidden" name="promotion_hidden" value="{{$lims_product_data->promotion}}"> --}}
-                                    <input name="promotion" type="checkbox" id="promotion" value="1">&nbsp;
+                                    <input name="promotion" type="checkbox" id="promotion" value="1" {{$lims_product_data->promotion ? "checked":""}}>&nbsp;
                                     <label><h5>{{trans('file.Add Promotional Price')}}</h5></label>
                                 </div>
 
@@ -429,6 +441,9 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
+        @if($lims_product_data->promotion)
+        $( "#promotion" ).trigger('change');
+        @endif
   $(window).keydown(function(event){
     if(event.keyCode == 13) {
       event.preventDefault();
@@ -1010,4 +1025,42 @@
     });
 
 </script>
+
+
+
+<div id="importProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+    <div role="document" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="exampleModalLabel" class="modal-title">تاريخ تعديل الكميات</h5>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th>تاريخ التعديل</th>
+                        <th>الكمية السابقة</th>
+                        <th>الكمية المحدثة</th>
+                        <th>بواسطة</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach( \App\QtyHistory::where('product_id',$lims_product_data->id)->orderBy('id','DESC')->get() as $qty )
+                        <tr>
+                            <td>{{$qty->created_at->format('Y-m-d h:i a')}}</td>
+                            <td>{{$qty->old_qty}}</td>
+                            <td>{{$qty->new_qty}}</td>
+                            <td>{{$qty->user ? $qty->user->name :""}}</td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endpush

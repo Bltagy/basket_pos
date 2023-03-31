@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>بتاريخ</label> 
+                                            <label>بتاريخ</label>
                                             <input type="text" name="created_at" class="form-control pos-date" >
                                         </div>
                                     </div>
@@ -287,6 +287,7 @@
 $(function() {
     $('#customer_id').val(1).change();
     $('#warehouse_id').val(1).change();
+
 });
     $("ul#return").siblings('a').attr('aria-expanded','true');
     $("ul#return").addClass("show");
@@ -377,7 +378,7 @@ lims_productcodeSearch.autocomplete({
             // return matcherSplit.test(item);
         });
         console.log(checkSplit);
-        
+
         if (checkSplit.length == 1){
             response($.grep(lims_product_array, function(item) {
                 return matcherSplit.test(item);
@@ -385,7 +386,7 @@ lims_productcodeSearch.autocomplete({
         }else{
             response($.grep(lims_product_array, function(item) {
                 return matcher.test(item);
-            }));    
+            }));
         }
     },
     response: function(event, ui) {
@@ -609,9 +610,9 @@ function productSearch(data){
                 // else
                 cols += '<td><input type="text" class="form-control batch-no" disabled/> <input type="hidden" class="product-batch-id" name="product_batch_id[]"/> </td>';
 
-                
+
                 if (isW){
-                    cols += '<td><input type="text" class="form-control qty" name="qty[]" value="'+weight+'" step="any" required/></td>';    
+                    cols += '<td><input type="text" class="form-control qty" name="qty[]" value="'+weight+'" step="any" required/></td>';
                 }else{
                     cols += '<td><input type="text" class="form-control qty" name="qty[]" value="1" step="any" required/></td>';
                 }
@@ -792,13 +793,62 @@ $(window).keydown(function(e){
         }
     }
 });
+function adminCodeCheck() {
+
+}
 
 $('.payment-form').on('submit',function(e){
     var rownumber = $('table.order-list tbody tr:last').index();
     if (rownumber < 0) {
-        alert("Please insert product to order table!")
+        alert("من فضلك ادخل المنتجات")
         e.preventDefault();
     }
+
+});
+
+$('#submit-button').on('click',function(e){
+    e.preventDefault();
+    @if( Auth::user()->role_id != 1)
+    var product_id = 0;
+    Swal.fire({
+        title: 'اكتب كود المشرف المؤقت',
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'استكمال',
+        cancelButtonText: 'ٌٌالغاء',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+            return fetch(`{{url('/check-code')}}/${login}?product_id=${product_id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                        `Request failed: ${error}`
+                    )
+                })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed && result.value == 0) {
+            Swal.fire({
+                title: `الكود غير صحيح!`
+            })
+        } else if (result.isConfirmed) {
+            $('.payment-form').submit();
+        }
+    })
+    @else
+    $('.payment-form').submit();
+    @endif
+
+
 });
 
 </script>
