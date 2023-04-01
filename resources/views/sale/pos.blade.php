@@ -1757,13 +1757,13 @@ warehouse_id = 1;
         product_code = data[0];
         product_name = data[1];
         product_qty = data[2];
-        product_type = data[3];
-        product_id = data[4];
-        product_list = data[5];
-        qty_list = data[6];
-        product_warehouse_price = data[7];
-        batch_no = data[8];
-        product_batch_id = data[9];
+        product_type = [];
+        product_id = data[3];
+        product_list = [];
+        qty_list = [];
+        product_warehouse_price = [];
+        batch_no = [];
+        product_batch_id = [];
         $.each(product_code, function(index) {
             lims_product_array.push(product_code[index] + ' (' + product_name[index] + ')');
         });
@@ -2780,7 +2780,7 @@ $('button[name="update_btn"]').on("click", function() {
 
     tax_rate[rowindex] = localStorageTaxRate[rowindex] = parseFloat(tax_rate_all[$('select[name="edit_tax_rate"]').val()]);
     tax_name[rowindex] = localStorageTaxName[rowindex] = $('select[name="edit_tax_rate"] option:selected').text();
-
+    product_type[pos] = 'standard'
     product_discount[rowindex] = $('input[name="edit_discount"]').val();
     if(product_type[pos] == 'standard'){
         var row_unit_operator = unit_operator[rowindex].slice(0, unit_operator[rowindex].indexOf(","));
@@ -3219,6 +3219,7 @@ function edit(){
 
     var row_product_code = $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.product-code').val();
     pos = product_code.indexOf(row_product_code);
+    product_type[pos] = 'standard'
     if(product_type[pos] == 'standard'){
         unitConversion();
         temp_unit_name = (unit_name[rowindex]).split(',');
@@ -3304,6 +3305,7 @@ function checkQuantity(sale_qty, flag) {
     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.in-stock').text(product_qty[pos]);
     localStorageQty[rowindex] = sale_qty;
     localStorage.setItem("localStorageQty", localStorageQty);
+    product_type[pos] = 'standard'
     if(product_type[pos] == 'standard') {
         if (product_qty[pos] == 0){
             product_qty[pos] = 100;
@@ -3372,6 +3374,7 @@ function unitConversion() {
 }
 
 function calculateRowProductData(quantity) {
+    product_type[pos] = 'standard'
     if(product_type[pos] == 'standard')
         unitConversion();
     else

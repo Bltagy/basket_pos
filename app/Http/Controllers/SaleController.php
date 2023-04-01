@@ -1036,8 +1036,8 @@ class SaleController extends Controller
         // ->get();
         // return $lims_product_warehouse_data;
 
-        config()->set('database.connections.mysql.strict', false);
-        \DB::reconnect(); //important as the existing connection if any would be in strict mode
+//        config()->set('database.connections.mysql.strict', false);
+//        \DB::reconnect(); //important as the existing connection if any would be in strict mode
 
         // $lims_product_with_batch_warehouse_data = Product::whereHas('warehouse', function ($query) use($id) {
         //     $query->where('warehouse_id', $id);
@@ -1049,8 +1049,8 @@ class SaleController extends Controller
         // ->get();
 
         //now changing back the strict ON
-        config()->set('database.connections.mysql.strict', true);
-        \DB::reconnect();
+//        config()->set('database.connections.mysql.strict', true);
+//        \DB::reconnect();
 
         // $lims_product_with_variant_warehouse_data = Product::join('product_warehouse', 'products.id', '=', 'product_warehouse.product_id')
         // ->where([
@@ -1115,7 +1115,10 @@ class SaleController extends Controller
         //     $expired_date[] = null;
         // }
         //retrieve product with type of digital, combo and service
-        $lims_product_data = Product::where('is_active', true)->get();
+        $lims_product_data = Product::where('is_active', true)
+//            ->where('qty','>',0)
+            ->with('translations')
+            ->get();
         $product_code = [];
         $product_name = [];
         $product_qty = [];
@@ -1126,16 +1129,10 @@ class SaleController extends Controller
             $product_qty[] = $product->qty;
             $product_code[] =  $product->code;
             $product_name[] = $product->name;
-            $product_type[] = $product->type;
             $product_id[] = $product->id;
-            $product_list[] = $product->product_list;
-            $qty_list[] = $product->qty_list;
-            $batch_no[] = null;
-            $product_batch_id[] = null;
-            $expired_date[] = null;
         }
         if (count($lims_product_data)){
-            $product_data = [$product_code, $product_name, $product_qty, $product_type, $product_id, $product_list, $qty_list, $product_price, $batch_no, $product_batch_id, $expired_date];
+            $product_data = [$product_code, $product_name, $product_qty, $product_id];
             return $product_data;
         }
         return [];

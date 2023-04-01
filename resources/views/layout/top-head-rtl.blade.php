@@ -59,7 +59,7 @@
     <script type="text/javascript" src="<?php echo asset('vendor/bootstrap/js/bootstrap.min.js') ?>"></script>
     <script type="text/javascript" src="<?php echo asset('vendor/bootstrap-toggle/js/bootstrap-toggle.min.js') ?>"></script>
     <script type="text/javascript" src="<?php echo asset('vendor/bootstrap/js/bootstrap-select.min.js') ?>"></script>
-    <script type="text/javascript" src="<?php echo asset('vendor/keyboard/js/jquery.keyboard.js') ?>"></script>  
+    <script type="text/javascript" src="<?php echo asset('vendor/keyboard/js/jquery.keyboard.js') ?>"></script>
     <script type="text/javascript" src="<?php echo asset('vendor/keyboard/js/jquery.keyboard.extension-autocomplete.js') ?>"></script>
     <script type="text/javascript" src="<?php echo asset('js/grasp_mobile_progress_circle-1.0.0.min.js') ?>"></script>
     <script type="text/javascript" src="<?php echo asset('vendor/jquery.cookie/jquery.cookie.js') ?>">
@@ -79,9 +79,9 @@
   <body onload="myFunction()">
     <div id="loader"></div>
     <div class="pos-page">
-      
+
       <div style="display:none;" id="content" class="animate-bottom">
-          @yield('content')  
+          @yield('content')
       </div>
     </div>
 
@@ -97,7 +97,7 @@
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'notifications.store', 'method' => 'post']) !!}
                       <div class="row">
-                          <?php 
+                          <?php
                               $lims_user_list = DB::table('users')->where([
                                 ['is_active', true],
                                 ['id', '!=', \Auth::user()->id]
@@ -125,7 +125,7 @@
         </div>
     </div>
     <!-- end notification modal -->
-    
+
     <!-- expense modal -->
     <div id="expense-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
         <div role="document" class="modal-dialog">
@@ -137,7 +137,7 @@
                 <div class="modal-body">
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'expenses.store', 'method' => 'post']) !!}
-                    <?php 
+                    <?php
                       $lims_expense_category_list = DB::table('expense_categories')->where('is_active', true)->get();
                       if(Auth::user()->role_id > 2)
                         $lims_warehouse_list = DB::table('warehouses')->where([
@@ -147,7 +147,7 @@
                       else
                         $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
                       $lims_account_list = \App\Account::where('is_active', true)->get();
-                    
+
                     ?>
                       <div class="row">
                         <div class="col-md-6 form-group">
@@ -208,7 +208,7 @@
                 <div class="modal-body">
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'report.warehouse', 'method' => 'post']) !!}
-                    <?php 
+                    <?php
                       $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
                     ?>
                       <div class="form-group">
@@ -244,7 +244,7 @@
                 <div class="modal-body">
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'report.user', 'method' => 'post']) !!}
-                    <?php 
+                    <?php
                       $lims_user_list = DB::table('users')->where('is_active', true)->get();
                     ?>
                       <div class="form-group">
@@ -280,7 +280,7 @@
                 <div class="modal-body">
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'report.customer', 'method' => 'post']) !!}
-                    <?php 
+                    <?php
                       $lims_customer_list = DB::table('customers')->where('is_active', true)->get();
                     ?>
                       <div class="form-group">
@@ -316,7 +316,7 @@
                 <div class="modal-body">
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'report.supplier', 'method' => 'post']) !!}
-                    <?php 
+                    <?php
                       $lims_supplier_list = DB::table('suppliers')->where('is_active', true)->get();
                     ?>
                       <div class="form-group">
@@ -340,7 +340,7 @@
         </div>
     </div>
     <!-- end supplier modal -->
-      
+
     @yield('scripts')
     <script>
         if ('serviceWorker' in navigator ) {
@@ -377,7 +377,7 @@
                   $("span.notification-number").text(alert_product);
               });
           });
-      
+
       $("a#add-expense").click(function(e){
         e.preventDefault();
         $('#expense-modal').modal();
