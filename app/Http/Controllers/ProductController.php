@@ -204,7 +204,7 @@ class ProductController extends Controller
                 else
                     // $nestedData['stock_worth'] = ($product->qty * $product->price) . ' ' . config('currency') . ' / ' . ($product->qty * $product->cost) . ' ' . config('currency');
                     $nestedData['stock_worth'] = 0;
-                    $nestedData['supplier'] = $purchase->supplier->name;
+                    $nestedData['supplier'] = $purchase->supplier ? $purchase->supplier->name: '--';
                 //$nestedData['stock_worth'] = ($product->qty * $product->price).'/'.($product->qty * $product->cost);
 
                 $nestedData['options'] = '<div class="btn-group">
