@@ -90,7 +90,7 @@
                     {{-- <th class="not-exported">{{trans('file.Brand')}}</th> --}}
                     <th class="not-exported">{{trans('file.category')}}</th>
                     <th class="not-exported">{{trans('file.Unit')}}</th>
-                    <th class="not-exported">{{trans('file.Stock Worth (Price/Cost)')}}</th>
+                    <th class="not-exported">المورد</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
@@ -108,7 +108,7 @@
                     {{-- <th class="not-exported">{{trans('file.Brand')}}</th> --}}
                     <th class="not-exported">{{trans('file.category')}}</th>
                     <th class="not-exported">{{trans('file.Unit')}}</th>
-                    <th class="not-exported">{{trans('file.Stock Worth (Price/Cost)')}}</th>
+                    <th class="not-exported">المورد</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </tfoot>
@@ -417,7 +417,7 @@
                 {"data": "qty"},
                 {"data": "category"},
                 {"data": "unit"},
-                {"data": "stock_worth"},
+                {"data": "supplier"},
                 {"data": "options"},
             ],
             'language': {

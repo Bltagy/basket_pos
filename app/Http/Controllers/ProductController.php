@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Purchase;
 use App\QtyHistory;
 use Illuminate\Http\Request;
 use Keygen;
@@ -170,6 +171,10 @@ class ProductController extends Controller
         $data = array();
         if (!empty($products)) {
             foreach ($products as $key => $product) {
+                $purchase = Purchase::whereHas('products', function ($q) use($product) {
+                    $q->where('product_id', $product->id);
+
+                })->with('supplier')->get()->last();
                 $nestedData['id'] = $product->id;
                 $nestedData['key'] = $key;
                 $product_image = explode(",", $product->image);
@@ -199,6 +204,7 @@ class ProductController extends Controller
                 else
                     // $nestedData['stock_worth'] = ($product->qty * $product->price) . ' ' . config('currency') . ' / ' . ($product->qty * $product->cost) . ' ' . config('currency');
                     $nestedData['stock_worth'] = 0;
+                    $nestedData['supplier'] = $purchase->supplier->name;
                 //$nestedData['stock_worth'] = ($product->qty * $product->price).'/'.($product->qty * $product->cost);
 
                 $nestedData['options'] = '<div class="btn-group">
