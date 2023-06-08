@@ -1178,7 +1178,7 @@
                             <li class="nav-item"><a class="dropdown-item" data-toggle="tooltip" href="{{route('setting.pos')}}" title="{{trans('file.POS Setting')}}"><i class="dripicons-gear"></i></a> </li>
                             @endif
                             <li class="nav-item">
-                                <a href="{{route('sales.printLastReciept')}}" onclick="return confirmCancel()" data-toggle="tooltip" title="{{trans('file.Print Last Reciept')}}"><i class="dripicons-print"></i></a>
+                                <a href="{{route('sales.printLastReciept')}}" onclick="return confirmCancelToUrl('{{route('sales.printLastReciept')}}')" data-toggle="tooltip" title="{{trans('file.Print Last Reciept')}}"><i class="dripicons-print"></i></a>
                             </li>
                             <li class="nav-item">
                                 <a href="" id="register-details-btn" data-toggle="tooltip" title="{{trans('file.Cash Register Details')}}"><i class="dripicons-briefcase"></i></a>
@@ -3585,6 +3585,53 @@ function cancel(rownumber) {
     calculateTotal();
 }
 
+function confirmCancelToUrl(url) {
+    var audio = $("#mysoundclip2")[0];
+    audio.play();
+    if (confirm("هل انت متاكد من الغاء الاوردر الحالي؟")) {
+        @if( Auth::user()->role_id != 1)
+        var product_id = $(this).closest('tr').find('input.product-id').val();
+        Swal.fire({
+            title: 'اكتب كود المشرف المؤقت',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'الغاء الاودرد الحالي',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`{{url('/check-code')}}/${login}?product_id=0`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.statusText)
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        )
+                    })
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed && result.value == 0) {
+                Swal.fire({
+                    title: `الكود غير صحيح!`
+                })
+            }else if(result.isConfirmed ){
+                window.location.replace(url);
+            }
+        })
+        @else
+             window.location.replace(url);
+        @endif
+
+
+    }
+    return false;
+}
 function confirmCancel() {
     var audio = $("#mysoundclip2")[0];
     audio.play();
