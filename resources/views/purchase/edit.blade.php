@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>بتاريخ</label> 
+                                            <label>بتاريخ</label>
                                             <input type="text" value="{{$lims_purchase_data->created_at->format('Y/m/d')}}" name="created_at" class="form-control pos-date" >
                                         </div>
                                     </div>
@@ -192,7 +192,7 @@
                                                         <input type="hidden" class="purchase-unit" name="purchase_unit[]" value="{{$unit_name}}"/>
                                                         <input type="hidden" class="purchase-unit-operator" value="{{$unit_operator}}"/>
                                                         <input type="hidden" class="purchase-unit-operation-value" value="{{$unit_operation_value}}"/>
-                                                        
+
                                                         <input type="hidden" class="discount-value" name="discount[]" value="{{$product_purchase->discount}}" />
                                                         <input type="hidden" class="tax-rate" name="tax_rate[]" value="{{$product_purchase->tax_rate}}"/>
                                                         @if($tax)
@@ -840,7 +840,7 @@ function calculateRowProductData(quantity) {
     if (tax_method[rowindex] == 1) {
         // var net_unit_cost = row_product_cost
         // console.log(row_product_cost);
-        
+
         var net_unit_cost = $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('input.net_unit_cost').val();
         var tax = net_unit_cost * quantity * (tax_rate[rowindex] / 100);
         var sub_total = (net_unit_cost * quantity) + tax;
