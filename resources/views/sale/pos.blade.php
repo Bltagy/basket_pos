@@ -1240,7 +1240,7 @@
                                         <a href="{{route('setting.general')}}"><i class="dripicons-gear"></i> {{trans('file.settings')}}</a>
                                       </li>
                                       @endif
-                                      @if( Auth::user()->role_id != 4)
+                                      @if( Auth::user()->role_id == 4)
                                           <li>
                                             <a href="{{url('my-transactions/'.date('Y').'/'.date('m'))}}"><i class="dripicons-swap"></i> {{trans('file.My Transaction')}}</a>
                                           </li>
