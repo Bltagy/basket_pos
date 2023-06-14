@@ -1240,11 +1240,11 @@
                                         <a href="{{route('setting.general')}}"><i class="dripicons-gear"></i> {{trans('file.settings')}}</a>
                                       </li>
                                       @endif
-                                      @if( Auth::user()->role_id != 4)
-                                          <li>
-                                            <a href="{{url('my-transactions/'.date('Y').'/'.date('m'))}}"><i class="dripicons-swap"></i> {{trans('file.My Transaction')}}</a>
-                                          </li>
-                                      @endif
+{{--                                      @if( Auth::user()->role_id != 4 && Auth::user()->role_id != 8)--}}
+{{--                                          <li>--}}
+{{--                                            <a href="{{url('my-transactions/'.date('Y').'/'.date('m'))}}"><i class="dripicons-swap"></i> {{trans('file.My Transaction')}}</a>--}}
+{{--                                          </li>--}}
+{{--                                      @endif--}}
                                       <li>
                                         <a href="{{url('holidays/my-holiday/'.date('Y').'/'.date('m'))}}"><i class="dripicons-vibrate"></i> {{trans('file.My Holiday')}}</a>
                                       </li>
