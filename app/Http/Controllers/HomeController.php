@@ -685,6 +685,9 @@ class HomeController extends Controller
 
     public function myTransaction($year, $month)
     {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 8){
+            return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
+        }
         $start = 1;
         $number_of_day = date('t', mktime(0, 0, 0, $month, 1, $year));
         while ($start <= $number_of_day) {
