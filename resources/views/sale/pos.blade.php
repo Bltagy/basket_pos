@@ -118,6 +118,7 @@
                     ['role_id', $role->id]
                 ])->first();
           ?>
+            @if( Auth::user()->role_id != 4 && Auth::user()->role_id != 8)
 
           <li><a href="#sale" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-cart"></i><span>{{trans('file.Sale')}}</span></a>
             <ul id="sale" class="collapse list-unstyled ">
@@ -145,6 +146,7 @@
               <li id="delivery-menu"><a href="{{route('delivery.index')}}">{{trans('file.Delivery List')}}</a></li>
             </ul>
           </li>
+            @endif
           <?php
             $index_permission = DB::table('permissions')->where('name', 'expenses-index')->first();
             $index_permission_active = DB::table('role_has_permissions')->where([
