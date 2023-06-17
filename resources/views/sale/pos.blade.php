@@ -44,7 +44,7 @@
                     ['role_id', $role->id]
                 ])->first();
           ?>
-
+            @if( Auth::user()->role_id != 4 && Auth::user()->role_id != 8)
           <li><a href="#product" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-list"></i><span>{{__('file.product')}}</span><span></a>
             <ul id="product" class="collapse list-unstyled ">
               <li id="category-menu"><a href="{{route('category.index')}}">{{__('file.category')}}</a></li>
@@ -73,6 +73,7 @@
               @endif
             </ul>
           </li>
+            @endif
           <?php
             $index_permission = DB::table('permissions')->where('name', 'purchases-index')->first();
               $index_permission_active = DB::table('role_has_permissions')->where([
@@ -200,7 +201,7 @@
                     ['role_id', $role->id]
                 ])->first();
           ?>
-          @if($index_permission_active)
+          @if($index_permission_active && (Auth::user()->role_id != 4 && Auth::user()->role_id != 8))
           <li><a href="#transfer" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-export"></i><span>{{trans('file.Transfer')}}</span></a>
             <ul id="transfer" class="collapse list-unstyled ">
               <li id="transfer-list-menu"><a href="{{route('transfers.index')}}">{{trans('file.Transfer List')}}</a></li>
@@ -269,7 +270,7 @@
                 ])->first();
 
           ?>
-          @if($index_permission_active || $balance_sheet_permission_active || $account_statement_permission_active)
+          @if($index_permission_active || $balance_sheet_permission_active || $account_statement_permission_active  && (Auth::user()->role_id != 4 && Auth::user()->role_id != 8))
           <li class=""><a href="#account" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-briefcase"></i><span>{{trans('file.Accounting')}}</span></a>
             <ul id="account" class="collapse list-unstyled ">
               @if($index_permission_active)
@@ -310,7 +311,7 @@
                     ['role_id', $role->id]
                 ])->first();
           ?>
-
+            @if( Auth::user()->role_id != 4 && Auth::user()->role_id != 8)
           <li class=""><a href="#hrm" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-user-group"></i><span>HRM</span></a>
             <ul id="hrm" class="collapse list-unstyled ">
               @if($department_active)
@@ -733,6 +734,7 @@
               @endif
             </ul>
           </li>
+            @endif
         </ul>
       </div>
     </div>
