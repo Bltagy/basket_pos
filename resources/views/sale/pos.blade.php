@@ -81,7 +81,7 @@
                     ['role_id', $role->id]
                 ])->first();
           ?>
-          @if($index_permission_active)
+          @if($index_permission_active && ( Auth::user()->role_id != 4 && Auth::user()->role_id != 8))
           <li><a href="#purchase" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-card"></i><span>{{trans('file.Purchase')}}</span></a>
             <ul id="purchase" class="collapse list-unstyled ">
               <li id="purchase-list-menu"><a href="{{route('purchases.index')}}">{{trans('file.Purchase List')}}</a></li>
