@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>بتاريخ</label> 
+                                            <label>بتاريخ</label>
                                             <input type="text" name="created_at" class="form-control pos-date" >
                                         </div>
                                     </div>
@@ -83,6 +83,7 @@
                                                     <tr>
                                                         <th>{{trans('file.name')}}</th>
                                                         <th>{{trans('file.Code')}}</th>
+                                                        <th>الكمية الحالية</th>
                                                         <th>{{trans('file.Quantity')}}</th>
                                                         <th class="recieved-product-qty d-none">{{trans('file.Recieved')}}</th>
                                                         {{-- <th>{{trans('file.Batch No')}}</th> --}}
@@ -98,7 +99,7 @@
                                                 <tbody>
                                                 </tbody>
                                                 <tfoot class="tfoot active">
-                                                    <th colspan="2">{{trans('file.Total')}}</th>
+                                                    <th colspan="3">{{trans('file.Total')}}</th>
                                                     <th id="total-qty">0</th>
                                                     <th class="recieved-product-qty d-none"></th>
                                                     {{-- <th></th> --}}
@@ -354,7 +355,7 @@
 // onScan.attachTo(document);
 // Register event listener
 // document.addEventListener('scan', function(sScancode, iQuatity) {
-//     // alert(sScancode); 
+//     // alert(sScancode);
 // });
 
     var lims_productcodeSearch = $('#lims_productcodeSearch');
@@ -386,7 +387,7 @@
             } else {
                 $("input[name='product_code_name']").val('');
             }
-            
+
         };
     },
     select: function(event, ui) {
@@ -566,6 +567,7 @@
                     temp_unit_name = (data[6]).split(',');
                     cols += '<td>' + data[0] + '<button type="button" class="edit-product btn btn-link" data-toggle="modal" data-target="#editModal"> <i class="dripicons-document-edit"></i></button></td>';
                     cols += '<td>' + data[1] + '</td>';
+                    cols += '<td>' + data[13] + '</td>';
                     cols += '<td><input type="text" class="form-control qty" name="qty[]" value="1" step="any" required/></td>';
                     if($('select[name="status"]').val() == 1)
                         cols += '<td class="recieved-product-qty d-none"><input type="number" class="form-control recieved" name="recieved[]" value="1" step="any"/></td>';
@@ -581,7 +583,7 @@
                         cols += '<td class="hidden"><input type="hidden" class="form-control batch-no" name="batch_no[]" disabled/></td>';
                         cols += '<td class="hidden"><input type="hidden" class="form-control expired-date" name="expired_date[]" /></td>';
                     }
-                    
+
                     cols += '<td class="net_unit_cost"><input type="text" class="form-control net_unit_cost" name="net_unit_cost[]" /></td>';
                     cols += '<td class="sale_price"><input type="text" class="form-control sale_price" name="sale_price[]" value="' + data[12] + '" /></td>';
                     cols += '<td class="sale_price_mobile"><input type="text" class="form-control sale_price_mobile" name="sale_price_mobile[]" value="' + data[12] + '" /></td>';
@@ -601,7 +603,7 @@
 
                     newRow.append(cols);
                     $("table.order-list tbody").prepend(newRow);
-                    
+
                     rowindex = newRow.index();
                     product_cost.splice(rowindex,0, parseFloat(data[2]));
                     product_discount.splice(rowindex,0, '0.00');
@@ -709,7 +711,7 @@
 
             // $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.net_unit_cost').text(net_unit_cost.toFixed(2));
             $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.net_unit_cost').val(net_unit_cost);
-            
+
             $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.tax').text(tax.toFixed(2));
             $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.tax-value').val(tax.toFixed(2));
             $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.sub-total').text(sub_total.toFixed(2));

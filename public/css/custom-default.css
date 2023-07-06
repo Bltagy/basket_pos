@@ -885,10 +885,10 @@ section.pos-section{
 	border: none;
 }
 
-.form-control.qty {
-	border: none;
-	font-size: 0.9em;
-}
+/*.form-control.qty {*/
+/*	border: none;*/
+/*	font-size: 0.9em;*/
+/*}*/
 
 @media all and (min-width:768px) {
 	.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
