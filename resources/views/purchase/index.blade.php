@@ -126,7 +126,7 @@
                     <th>Qty</th>
                     <th>{{trans('file.Unit Cost')}}</th>
                     <th>سعر البيع</th>
-                    <th>{{trans('file.Discount')}}</th>
+                    <th>سعر الاونلاين</th>
                     <th>{{trans('file.Subtotal')}}</th>
                 </thead>
                 <tbody>
@@ -347,14 +347,14 @@ response: function(event, ui) {
         } else {
             $("input[name='product_code_name']").val('');
         }
-        
+
     };
 },
 select: function(event, ui) {
     var label = ui.item.label;
     var value = ui.item.value;
    //store in session
-  document.valueSelectedForAutocomplete = value 
+  document.valueSelectedForAutocomplete = value
 }
 });
 
@@ -759,7 +759,6 @@ select: function(event, ui) {
     }
 
     function purchaseDetails(purchase){
-        console.log(purchase);
         var htmltext = '<strong>{{trans("file.Date")}}: </strong>'+purchase[0]+'<br><strong>{{trans("file.reference")}}: </strong>'+purchase[1]+'<br><strong>{{trans("file.Purchase Status")}}: </strong>'+purchase[2]+'<br><br><div class="row"><div class="col-md-6"><strong>{{trans("file.From")}}:</strong><br>'+purchase[4]+'<br>'+purchase[5]+'<br>'+purchase[6]+'</div><div class="col-md-6"><div class="float-right"><strong>{{trans("file.To")}}:</strong><br>'+purchase[7]+'<br>'+purchase[8]+'<br>'+purchase[9]+'<br>'+purchase[10]+'<br>'+purchase[11]+'<br>'+purchase[12]+'</div></div></div>';
 
         $.get('purchases/product_purchase/' + purchase[3], function(data){
@@ -784,12 +783,12 @@ select: function(event, ui) {
                 newRow.append(cols);
                 newBody.append(newRow);
             });
-
+            console.log(purchase)
             var newRow = $("<tr>");
             cols = '';
             cols += '<td colspan=4><strong>{{trans("file.Total")}}:</strong></td>';
             cols += '<td>' + purchase[25] + '</td>';
-            cols += '<td>' + purchase[16] + '</td>';
+            cols += '<td>' + purchase[26] + '</td>';
             cols += '<td>' + purchase[20] + '</td>';
             newRow.append(cols);
             newBody.append(newRow);
