@@ -41,7 +41,7 @@
                     <td>{{ $user->company_name}}</td>
                     <td>{{ $user->phone}}</td>
                     <?php $role = DB::table('roles')->find($user->role_id);?>
-                    <td>{{ $role->name }}</td>
+                    <td>@isset($role->name) {{ $role->name }}@endisset</td>
                     @if($user->is_active)
                     <td><div class="badge badge-success">Active</div></td>
                     @else
