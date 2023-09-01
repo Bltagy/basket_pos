@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductExport;
 use App\Purchase;
 use App\QtyHistory;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ use App\Product_Warehouse;
 use App\Product_Supplier;
 use Auth;
 use DNS1D;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Validation\Rule;
@@ -918,5 +921,18 @@ class ProductController extends Controller
         $lims_product_data->delete();
         $send_to_app = file_get_contents('https://app2.basketstore.net/api/posOperation/product/delete/' . $id);
         return redirect('products')->with('message', 'تم الحـذف بنجاح');
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function export()
+    {
+        return Excel::download(new ProductExport, 'products.xlsx');
+    }
+    public function doDB()
+    {
+        $all  = Product::where('qty','<','0')->update(['qty'=>0]);
     }
 }
