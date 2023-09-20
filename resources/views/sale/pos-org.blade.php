@@ -3103,12 +3103,12 @@ function addNewProduct(data, code){
     cols += '<td class="col-sm-2 product-price"></td>';
 
     if (isW){
-        cols += '<td class="col-sm-3"><input type="text" name="qty[]" maxlength="3"  class="form-control qty numkey input-number d-inline"  step="any" required><span class="w_unit_name"></span></td>';
+        cols += '<td class="col-sm-3"><input type="text" name="qty[]" maxlength="3" readonly class="form-control qty numkey input-number d-inline" readonly step="any" required><span class="w_unit_name"></span></td>';
     }else{
         if (role_id != 1){
-            cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" disabled class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input  type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button"  class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';
+            cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" disabled class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input readonly type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button"  class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';
         }else{
-            cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input  type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button" class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';
+            cols += '<td class="col-sm-3"><div class="input-group"><span class="input-group-btn"><button type="button" class="btn btn-default minus"><span class="dripicons-minus"></span></button></span><input readonly type="text" name="qty[]" maxlength="3" class="form-control qty numkey input-number" step="any" required><span class="input-group-btn"><button type="button" class="btn btn-default plus"><span class="dripicons-plus"></span></button></span></div></td>';
         }
     }
 
