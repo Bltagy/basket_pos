@@ -12,7 +12,7 @@ class ProductExport implements FromCollection, WithMapping, WithHeadings
 {
     public function collection()
     {
-        return Product::orderBy('category_id')->get();
+        return Product::orderBy('category_id')->where('qty','>',0)->get();
     }
     public function map($product): array
     {
