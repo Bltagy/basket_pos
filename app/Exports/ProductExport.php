@@ -21,7 +21,7 @@ class ProductExport implements FromCollection, WithMapping, WithHeadings
             $product->code,
             $product->price,
 //            $product->category->name,
-//            $product->qty,
+            $product->qty,
         ];
     }
 
@@ -32,7 +32,7 @@ class ProductExport implements FromCollection, WithMapping, WithHeadings
             'الباركود',
             'السعر',
 //            'اسم التصنيف',
-//            'الكمية المتاحة',
+            'الكمية المتاحة',
         ];
     }
 }
