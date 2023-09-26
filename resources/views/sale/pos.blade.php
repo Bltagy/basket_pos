@@ -18,6 +18,7 @@
             <div class="main-menu">
                 <ul id="side-main-menu" class="side-menu list-unstyled">
                     <li><a href="{{url('/')}}"> <i class="dripicons-meter"></i><span>{{ __('file.dashboard') }}</span></a></li>
+                    <li><a href="{{url('/products/export')}}"> <i class="dripicons-export"></i><span>تصدير المنتجات</span></a></li>
                     <?php
                     $role = DB::table('roles')->find(Auth::user()->role_id);
                     $index_permission = DB::table('permissions')->where('name', 'products-index')->first();
