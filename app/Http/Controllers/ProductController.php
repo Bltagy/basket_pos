@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProductExport;
+use App\Exports\ProductNullExport;
 use App\Purchase;
 use App\QtyHistory;
 use Illuminate\Http\Request;
@@ -930,6 +931,10 @@ class ProductController extends Controller
     public function export()
     {
         return Excel::download(new ProductExport, 'products.xlsx');
+    }
+    public function exportNull()
+    {
+        return Excel::download(new ProductNullExport(), 'products-zero-qty.xlsx');
     }
     public function doDB()
     {

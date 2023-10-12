@@ -17,8 +17,13 @@
             <!-- Sidebar Navigation Menus-->
             <div class="main-menu">
                 <ul id="side-main-menu" class="side-menu list-unstyled">
-                    <li><a href="{{url('/')}}"> <i class="dripicons-meter"></i><span>{{ __('file.dashboard') }}</span></a></li>
-                    <li><a href="{{url('/products/export')}}"> <i class="dripicons-export"></i><span>تصدير المنتجات</span></a></li>
+
+                        <li><a href="#product" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-list"></i><span>{{__('file.product')}}</span><span></a>
+                            <ul id="product" class="collapse list-unstyled ">
+                                <li><a href="{{url('/products/export')}}"> <i class="dripicons-export"></i><span>كل المنتجات</span></a></li>
+                                <li><a href="{{url('/products/exportNull')}}"> <i class="dripicons-export"></i><span> المنتجات السالبة </span></a></li>
+                            </ul>
+                        </li>
                     <?php
                     $role = DB::table('roles')->find(Auth::user()->role_id);
                     $index_permission = DB::table('permissions')->where('name', 'products-index')->first();
