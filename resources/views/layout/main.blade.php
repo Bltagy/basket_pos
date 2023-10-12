@@ -78,7 +78,7 @@
           <div class="main-menu">
             <ul id="side-main-menu" class="side-menu list-unstyled">
               <li><a href="{{url('/')}}"> <i class="dripicons-meter"></i><span>{{ __('file.dashboard') }}</span></a></li>
-                <li><a href="#productNull" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-list"></i><span>{{__('file.product')}}</span><span></a>
+                <li><a href="#productNull" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-list"></i><span>تصدير المنتجات</span><span></a>
                     <ul id="productNull" class="collapse list-unstyled ">
                         <li><a href="{{url('/products/export')}}"> <i class="dripicons-export"></i><span>كل المنتجات</span></a></li>
                         <li><a href="{{url('/products/exportNull')}}"> <i class="dripicons-export"></i><span> المنتجات السالبة </span></a></li>
