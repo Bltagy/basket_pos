@@ -2711,7 +2711,6 @@ class ProductController extends Controller
         $all = Product::whereIn('code',$prods)->get();
 
         foreach ($all as $lims_product_data) {
-            dd($lims_product_data);
             $lims_product_data->is_active = false;
             if ($lims_product_data->image != 'zummXD2dvAtI.png') {
                 $images = explode(",", $lims_product_data->image);
@@ -2722,7 +2721,7 @@ class ProductController extends Controller
             }
             $lims_product_data->delete();
         }
+        dd('done');
 
-        dd(array_diff($prods, $all) );
     }
 }
