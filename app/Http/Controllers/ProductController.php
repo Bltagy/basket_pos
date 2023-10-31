@@ -2710,6 +2710,6 @@ class ProductController extends Controller
             "6224007701188"];
         $all = Product::whereIn('code',$prods)->pluck('id')->toArray();
 
-        dd(array_diff($all, $prods) );
+        dd( $all );
     }
 }
