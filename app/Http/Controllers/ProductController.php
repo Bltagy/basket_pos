@@ -2708,7 +2708,8 @@ class ProductController extends Controller
             "6224011843058",
             "6224007701676",
             "6224007701188"];
-        $all = Product::whereIn('code',$prods)->count();
-        dd($all );
+        $all = Product::whereIn('code',$prods)->pluck('id')->toArray();
+
+        dd(array_diff($prods, $all) );
     }
 }
