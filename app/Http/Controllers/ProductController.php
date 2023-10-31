@@ -2708,7 +2708,7 @@ class ProductController extends Controller
             "6224011843058",
             "6224007701676",
             "6224007701188"];
-        $all = Product::whereIn('code',$prods)->get();
+        $all = Product::whereIn('code',$prods)->withTrashed()->get();
 
         foreach ($all as $lims_product_data) {
             $lims_product_data->is_active = false;
