@@ -2708,7 +2708,20 @@ class ProductController extends Controller
             "6224011843058",
             "6224007701676",
             "6224007701188"];
-        $all = Product::whereIn('code',$prods)->pluck('code')->toArray();
+        $all = Product::whereIn('code',$prods)->get();
+
+        foreach ($all as $lims_product_data) {
+            dd($lims_product_data);
+            $lims_product_data->is_active = false;
+            if ($lims_product_data->image != 'zummXD2dvAtI.png') {
+                $images = explode(",", $lims_product_data->image);
+                foreach ($images as $key => $image) {
+                    if (file_exists('public/images/product/' . $image))
+                        @unlink('public/images/product/' . $image);
+                }
+            }
+            $lims_product_data->delete();
+        }
 
         dd(array_diff($prods, $all) );
     }
