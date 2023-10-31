@@ -2712,14 +2712,8 @@ class ProductController extends Controller
 
         foreach ($all as $lims_product_data) {
             $lims_product_data->is_active = false;
-            if ($lims_product_data->image != 'zummXD2dvAtI.png') {
-                $images = explode(",", $lims_product_data->image);
-                foreach ($images as $key => $image) {
-                    if (file_exists('public/images/product/' . $image))
-                        @unlink('public/images/product/' . $image);
-                }
-            }
-            $lims_product_data->delete();
+
+            $lims_product_data->forcedelete();
         }
         dd('done');
 
