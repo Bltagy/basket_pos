@@ -16,12 +16,13 @@ class ProductExport implements FromCollection, WithMapping, WithHeadings
     }
     public function map($product): array
     {
+        $latest = $product->ProductPurchase()->latest()->first();
         return [
             $product->name,
             $product->code,
             $product->price,
-//            $product->category->name,
             $product->qty,
+            $latest ? $latest->created_at->format('Y/m/d h:i a') : '------',
         ];
     }
 
@@ -31,8 +32,8 @@ class ProductExport implements FromCollection, WithMapping, WithHeadings
             'اسم الصنف',
             'الباركود',
             'السعر',
-//            'اسم التصنيف',
             'الكمية المتاحة',
+            'اخر اضافة',
         ];
     }
 }

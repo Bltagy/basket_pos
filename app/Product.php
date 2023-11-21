@@ -42,6 +42,10 @@ class Product extends Model implements TranslatableContract
     {
         return $this->hasMany('App\Product_Warehouse');
     }
+    public function ProductPurchase()
+    {
+        return $this->hasMany('App\ProductPurchase');
+    }
 
     public function scopeActiveStandard($query)
     {
