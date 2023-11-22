@@ -87,6 +87,7 @@
                     <th>{{trans('file.Price')}}</th>
                     <th>سعر للموبايل</th>
                     <th>{{trans('file.Quantity')}}</th>
+                    <th>اخر اضافة</th>
                     {{-- <th class="not-exported">{{trans('file.Brand')}}</th> --}}
                     <th class="not-exported">{{trans('file.category')}}</th>
                     <th class="not-exported">{{trans('file.Unit')}}</th>
@@ -105,6 +106,7 @@
                     <th>{{trans('file.Price')}}</th>
                     <th>سعر للموبايل</th>
                     <th>{{trans('file.Quantity')}}</th>
+                    <th>اخر اضافة</th>
                     {{-- <th class="not-exported">{{trans('file.Brand')}}</th> --}}
                     <th class="not-exported">{{trans('file.category')}}</th>
                     <th class="not-exported">{{trans('file.Unit')}}</th>
@@ -415,6 +417,7 @@
                 {"data": "price"},
                 {"data": "app_price"},
                 {"data": "qty"},
+                {"data": "latest_added"},
                 {"data": "category"},
                 {"data": "unit"},
                 {"data": "supplier"},

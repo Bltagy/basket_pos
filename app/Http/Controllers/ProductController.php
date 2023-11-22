@@ -64,6 +64,7 @@ class ProductController extends Controller
             5 => 'brand_id',
             6 => 'category_id',
             7 => 'qty',
+            7 => 'latest_added',
             8 => 'unit_id',
             9 => 'price',
             9 => 'app_price',
@@ -188,6 +189,8 @@ class ProductController extends Controller
 
                 $nestedData['code'] = $product->code;
                 $nestedData['app_price'] = $product->app_price;
+                $latest = $product->ProductPurchase()->latest()->first();
+                $nestedData['latest_added'] = $latest ? $latest->created_at->format('Y/m/d h:i a') : '------';
                 if ($product->brand_id)
                     $nestedData['brand'] = $product->brand->title;
                 else
