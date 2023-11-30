@@ -16,13 +16,13 @@ class ProductNullExport implements FromCollection, WithMapping, WithHeadings
     }
     public function map($product): array
     {
-        $latest = $product->ProductPurchase()->latest()->first();
+//        $latest = $product->ProductPurchase()->latest()->first();
         return [
             $product->name,
             $product->code,
             $product->price,
             $product->qty,
-            $latest ? $latest->created_at->format('Y/m/d h:i a') : '------',
+//            $latest ? $latest->created_at->format('Y/m/d h:i a') : '------',
         ];
     }
 
