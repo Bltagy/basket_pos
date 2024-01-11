@@ -37,7 +37,9 @@ class NotificationController extends Controller
             $item  =$imported_items->where('0', $product->code)->first();
             if ( $item ){
                 $c++;
-                $product->qty = floatval($item[1]);
+                $product->qty = floatval($item[2]);
+                $product->price = floatval($item[1]);
+                $product->app_price = floatval($item[1]);
                 $product->save();
             }
         }
