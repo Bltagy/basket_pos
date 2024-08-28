@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::get('products/gencode', 'ProductController@generateCode');
 	Route::get('products/export', 'ProductController@export');
 	Route::get('products/exportNull', 'ProductController@exportNull');
+	Route::get('products/orderExport', 'ProductController@exportLatestOrders');
 	Route::get('products/db1982', 'ProductController@doDB');
 	Route::get('products/search', 'ProductController@search');
 	Route::get('products/saleunit/{id}', 'ProductController@saleUnit');

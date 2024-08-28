@@ -6,6 +6,8 @@ use App\Exports\ProductExport;
 use App\Exports\ProductNullExport;
 use App\Purchase;
 use App\QtyHistory;
+use App\Sale;
+use App\User;
 use Illuminate\Http\Request;
 use Keygen;
 use App\Brand;
@@ -937,6 +939,19 @@ class ProductController extends Controller
     }
     public function exportNull()
     {
+        return Excel::download(new ProductNullExport(), 'products-zero-qty.xlsx');
+    }
+    public function exportLatestOrders()
+    {
+        dd(User::whereDoesntHave('sales', function ($subQuery) {
+            return $subQuery->where(
+                'created_at', '>', Carbon::now()->subMonth(1)->toDateTimeString()
+            );
+        })
+//               ->with(['sales' => function ($q){
+//                $q->latest();
+//            }])
+               ->get()->toArray());
         return Excel::download(new ProductNullExport(), 'products-zero-qty.xlsx');
     }
     public function doDB()
