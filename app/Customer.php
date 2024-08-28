@@ -21,6 +21,10 @@ class Customer extends Model
         return $this->hasMany('App\Sale',);
     }
 
+    public function laetstSales() {
+        return $this->hasOne('App\Sale',)->latest();
+    }
+
     protected static function booted()
     {
         static::created(function ($data) {

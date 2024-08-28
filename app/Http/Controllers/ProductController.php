@@ -949,10 +949,9 @@ class ProductController extends Controller
                 'created_at', '>', Carbon::now()->subMonth(6)->toDateTimeString()
             );
         })
-//               ->with(['sales' => function ($q){
-//                $q->latest();
-//            }])
-               ->get()->toArray());
+                   ->whereHas('sales')
+                   ->with('laetstSales')
+                   ->get()->toArray());
         return Excel::download(new ProductNullExport(), 'products-zero-qty.xlsx');
     }
     public function doDB()
