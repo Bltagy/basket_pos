@@ -944,14 +944,6 @@ class ProductController extends Controller
     }
     public function exportLatestOrders()
     {
-        dd(Customer::whereDoesntHave('sales', function ($subQuery) {
-            return $subQuery->where(
-                'created_at', '>', Carbon::now()->subMonth(6)->toDateTimeString()
-            );
-        })
-                   ->whereHas('sales')
-                   ->with('laetstSales')
-                   ->get()->toArray());
         return Excel::download(new ProductNullExport(), 'products-zero-qty.xlsx');
     }
     public function doDB()

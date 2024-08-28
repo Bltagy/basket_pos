@@ -3,7 +3,9 @@
 namespace App\Exports;
 
 
+use App\Customer;
 use App\Product;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -12,28 +14,35 @@ class ProductNullExport implements FromCollection, WithMapping, WithHeadings
 {
     public function collection()
     {
-        return Product::orderBy('category_id')->where('qty','<=',0)->get();
+        return Customer::whereDoesntHave('sales', function ($subQuery) {
+            return $subQuery->where(
+                'created_at', '>', Carbon::now()->subMonth(6)->toDateTimeString()
+            );
+        })
+                       ->whereHas('sales')
+                       ->with('laetstSales')
+                       ->get();
     }
     public function map($product): array
     {
 //        $latest = $product->ProductPurchase()->latest()->first();
         return [
             $product->name,
-            $product->code,
-            $product->price,
-            $product->qty,
-//            $latest ? $latest->created_at->format('Y/m/d h:i a') : '------',
+            $product->phone_number,
+            $product->address,
+            $product->laetstSales->created_at,
+            $product->sales()->count()
         ];
     }
 
     public function headings(): array
     {
         return [
-            'اسم الصنف',
-            'الباركود',
-            'السعر',
-            'الكمية المتاحة',
-            'اخر اضافة',
+            'اسم العميل',
+            'الموبايل',
+            'العنوان',
+            'تاريخ اخر اوردر',
+            'عدد الاوردرات الكلي',
         ];
     }
 }
