@@ -17,6 +17,10 @@ class Customer extends Model
     	return $this->belongsTo('App\User');
     }
 
+    public function sales() {
+        return $this->hasMany('App\Sale',);
+    }
+
     protected static function booted()
     {
         static::created(function ($data) {

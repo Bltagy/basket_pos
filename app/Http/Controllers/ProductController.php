@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use App\Exports\ProductExport;
 use App\Exports\ProductNullExport;
 use App\Purchase;
@@ -943,9 +944,9 @@ class ProductController extends Controller
     }
     public function exportLatestOrders()
     {
-        dd(User::whereDoesntHave('sales', function ($subQuery) {
+        dd(Customer::whereDoesntHave('sales', function ($subQuery) {
             return $subQuery->where(
-                'created_at', '>', Carbon::now()->subMonth(1)->toDateTimeString()
+                'created_at', '>', Carbon::now()->subMonth(6)->toDateTimeString()
             );
         })
 //               ->with(['sales' => function ($q){
